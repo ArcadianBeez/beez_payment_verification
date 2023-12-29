@@ -28,77 +28,106 @@ class BankAccountInfoUploader extends StatefulWidget {
 }
 
 class _BankAccountInfoUploaderState extends State<BankAccountInfoUploader> {
-   late BankTransferInfo bankTransferInfo;
+   late BankTransferInfo? bankTransferInfo;
+   bool isReady= false;
    XFile? pickedFile;
+   bool loading = false;
 
 
   @override
   void initState() {
-    bankTransferInfo= extractJwtPayload(widget.jwt);
+
+      bankTransferInfo= extractJwtPayload(widget.jwt);
+    isReady=true;
+
     super.initState();
   }
 
-  BankTransferInfo extractJwtPayload(String token) {
-   // try {
+  BankTransferInfo? extractJwtPayload(String token) {
+
+    try {
     print('token: $token');
       Map<String, dynamic> payload = Jwt.parseJwt(token);
       return BankTransferInfo.fromJson(payload);
-    // } catch (e) {
-    //   print('Error al decodificar el token: $e');
-    //   return BankTransferInfo.fromJson({});
-    // }
+    } catch (e) {
+      print('Error al decodificar el token: $e');
+      return null;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-          child: Column(
+      body: isReady && bankTransferInfo!=null?Stack(
         children: [
-          BankAccountDetails(bankInfo: bankTransferInfo),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-            width: double.infinity,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Total a pagar: ', style: Theme.of(context).textTheme.headline2!.copyWith(fontWeight: FontWeight.bold, fontSize: 15)),
-                Expanded(child: Container()),
-                Text(bankTransferInfo.price.toStringAsFixed(2), style: Theme.of(context).textTheme.headline2!.copyWith(fontWeight: FontWeight.bold, fontSize: 15))
-              ],
+
+          Center(
+              child: Column(
+            children: [
+              BankAccountDetails(bankInfo: bankTransferInfo!),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                width: double.infinity,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Total a pagar: ', style: Theme.of(context).textTheme.headline2!.copyWith(fontWeight: FontWeight.bold, fontSize: 15)),
+                    Expanded(child: Container()),
+                    Text(bankTransferInfo!.price.toStringAsFixed(2), style: Theme.of(context).textTheme.headline2!.copyWith(fontWeight: FontWeight.bold, fontSize: 15))
+                  ],
+                ),
+              ),
+
+              ImageTransferBankPicker(
+                  token: widget.jwt,
+                  bankName: bankTransferInfo!.bankName ?? 'N/A',
+                onFilePicked: (pickedFile) {
+                  setState(() {
+                    this.pickedFile = pickedFile;
+                  });
+                },
+
+              ),
+              MaterialButton(
+                minWidth: 200,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                  color: Theme.of(context).colorScheme.secondary,
+                  onPressed: () async {
+                  setState(() {
+                    loading = true;
+                  });
+                    var response=await uploadImagePlan(widget.jwt, pickedFile!);
+                    setState(() {
+                      loading = false;
+                    });
+                    showDialog(context: context, builder: (BuildContext context){
+                      return AlertDialog(
+                        content: Text(response),
+                        actions: [
+                          TextButton(onPressed: (){
+                            Navigator.of(context).pop();
+                          }, child: Text("OK", style: Theme.of(context).textTheme.bodyMedium)),
+                        ],
+                      );
+                    });
+                }
+              , child: Text('ENVIAR', style: Theme.of(context).textTheme.headline2!.copyWith(color: Theme.of(context).hintColor, fontWeight: FontWeight.bold, fontSize: 15),)),
+            ],
+          )),
+          if (loading)
+            Container(
+              color: Colors.black.withOpacity(0.5),
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
             ),
-          ),
-
-          ImageTransferBankPicker(
-              token: widget.jwt,
-              bankName: bankTransferInfo.bankName ?? 'N/A',
-            onFilePicked: (pickedFile) {
-              setState(() {
-                this.pickedFile = pickedFile;
-              });
-            },
-
-          ),
-          MaterialButton(
-            minWidth: 200,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10)),
-              color: Theme.of(context).colorScheme.secondary,
-              onPressed: () async {
-                var response=await uploadImagePlan(widget.jwt, pickedFile!);
-                print(response);
-                showDialog(context: context, builder: (BuildContext context){
-                  return AlertDialog(
-                    content: Text(response),
-                    actions: [
-                      TextButton(onPressed: (){
-                        Navigator.of(context).pop();
-                      }, child: Text("OK", style: Theme.of(context).textTheme.bodyMedium)),
-                    ],
-                  );
-                });
-            }
-          , child: Text('ENVIAR', style: Theme.of(context).textTheme.headline2!.copyWith(color: Theme.of(context).hintColor, fontWeight: FontWeight.bold, fontSize: 15),)),
+        ],
+      ):Center(child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('Token Inválido'),
+          Text('Por favor, contacte al administrador')
         ],
       )),
     );
@@ -151,7 +180,6 @@ class _BankAccountInfoUploaderState extends State<BankAccountInfoUploader> {
 
 
        if (response.statusCode == 200) {
-
          return "Image subida exitosamente";
        } else {
          var responseData = json.decode(response.body);
