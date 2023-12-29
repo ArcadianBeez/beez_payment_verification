@@ -44,7 +44,7 @@ class _ImageSelectorWidgetState extends State<ImageSelectorWidget> {
         MediaQuery.of(context).size.height;
 
     var request = http.MultipartRequest(
-        "POST", Uri.parse("http://192.168.1.9:8888/upload"));
+        "POST", Uri.parse("http://192.168.1.12:8888/upload"));
     Map<String, String> headers = {
       "Accept": 'application/json',
     };
