@@ -58,6 +58,7 @@ class _BankAccountInfoUploaderState extends State<BankAccountInfoUploader> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: isReady && bankTransferInfo!=null?Stack(
         children: [
 
