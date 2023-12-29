@@ -1,12 +1,12 @@
 class BankTransferInfo {
-  String iss;
-  int sub;
-  int iat;
-  int exp;
+  // String iss;
+  // int sub;
+ // int iat;
+  //int exp;
   String orderId;
   int userId;
   int paymentId;
-  double price;
+  num price;
   String accountNumber;
   String ciNumber;
   String accountType;
@@ -15,10 +15,10 @@ class BankTransferInfo {
   String bankName;
 
   BankTransferInfo({
-    required this.iss,
-    required this.sub,
-    required this.iat,
-    required this.exp,
+    // required this.iss,
+    // required this.sub,
+   // required this.iat,
+   // required this.exp,
     required this.orderId,
     required this.userId,
     required this.paymentId,
@@ -33,10 +33,10 @@ class BankTransferInfo {
 
   factory BankTransferInfo.fromJson(Map<String, dynamic> json) {
     return BankTransferInfo(
-      iss: json['iss'],
-      sub: json['sub'],
-      iat: json['iat'],
-      exp: json['exp'],
+      // iss: json['iss'],
+      // sub: json['sub'],
+     // iat: json['iat']!=null?json['iat']:0,
+      //exp: json['exp'],
       orderId: json['order_id'],
       userId: json['user_id'],
       paymentId: json['payment_id'],
@@ -52,10 +52,10 @@ class BankTransferInfo {
 
   Map<String, dynamic> toJson() {
     return {
-      'iss': iss,
-      'sub': sub,
-      'iat': iat,
-      'exp': exp,
+      // 'iss': iss,
+      // 'sub': sub,
+      //'iat': iat,
+      //'exp': exp,
       'order_id': orderId,
       'user_id': userId,
       'payment_id': paymentId,

@@ -1,10 +1,19 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:global_configuration/global_configuration.dart';
 import 'package:payment_verification_app/pages/bank_account_info_uploader.dart';
-
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'config/app_config.dart' as config;
+import 'firebase_options.dart';
+import 'generated/i18n.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await GlobalConfiguration().loadFromAsset("configurations");
   usePathUrlStrategy();
   runApp( MyApp());
 }
@@ -66,9 +75,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
       theme: lightTheme,
+      localizationsDelegates: [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
+      localeListResolutionCallback:
+      S.delegate.listResolution(fallback: const Locale('en', '')),
+      navigatorObservers: [
+        // FirebaseAnalyticsObserver(analytics: analytics),
+      ],
     );
   }
 }
@@ -88,8 +109,14 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     print(Uri.base);
+
+    //_token = Uri.base.queryParameters['token'] ?? 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJMYXJhdmVsSldUIiwic3ViIjo1MTI4MiwiaWF0IjoxNzAzODc4MzA0LCJleHAiOjE3MDM4Nzg5MDQsIm9yZGVyX2lkIjoiMzI3ODg0IiwidXNlcl9pZCI6NTEyODIsInBheW1lbnRfaWQiOjMyNzgyOSwicHJpY2UiOjIuMjUsImFjY291bnRfbnVtYmVyIjoiMjIwNjIxNTcwMSIsImNpX251bWJlciI6IjEwOTE3ODk3MTYwMDEiLCJhY2NvdW50X3R5cGUiOiJBaG9ycm9zIiwib3duZXJfbmFtZSI6IkJFRVMgREVMSVZFUlkgQ0lBIExUREEiLCJlbWFpbCI6ImVkY2FpY2VkbzEyQGdtYWlsLmNvbSIsImJhbmtfbmFtZSI6IkIuIFBpY2hpbmNoYSJ9.IZIe99tSW-u6sQVaS1gCqwwx6t3k29Q3EvV1NfmOrEY';
+   _token = Uri.base.queryParameters['token'] ??  'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJMYXJhdmVsSldUIiwic3ViIjo1MTI4MiwiaWF0IjoxNzAzODgzMjgzLCJvcmRlcl9pZCI6IjMyNzg4MyIsInVzZXJfaWQiOjUxMjgyLCJwYXltZW50X2lkIjozMjc4MjgsInByaWNlIjoyLjI1LCJhY2NvdW50X251bWJlciI6IjIyMDYyMTU3MDEiLCJjaV9udW1iZXIiOiIxMDkxNzg5NzE2MDAxIiwiYWNjb3VudF90eXBlIjoiQWhvcnJvcyIsIm93bmVyX25hbWUiOiJCRUVTIERFTElWRVJZIENJQSBMVERBIiwiZW1haWwiOiJlZGNhaWNlZG8xMkBnbWFpbC5jb20iLCJiYW5rX25hbWUiOiJCLiBQaWNoaW5jaGEifQ.4G0cqa9PY98hzlW8egzVLF-8QZFV4wpIU5yY6TVelDA';
+    //'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJMYXJhdmVsSldUIiwic3ViIjo1MTI4MiwiaWF0IjoxNzAzODgwODI0LCJvcmRlcl9pZCI6IjMyNzg4NCIsInVzZXJfaWQiOjUxMjgyLCJwYXltZW50X2lkIjozMjc4MjksInByaWNlIjoyLjI1LCJhY2NvdW50X251bWJlciI6IjIyMDYyMTU3MDEiLCJjaV9udW1iZXIiOiIxMDkxNzg5NzE2MDAxIiwiYWNjb3VudF90eXBlIjoiQWhvcnJvcyIsIm93bmVyX25hbWUiOiJCRUVTIERFTElWRVJZIENJQSBMVERBIiwiZW1haWwiOiJlZGNhaWNlZG8xMkBnbWFpbC5jb20iLCJiYW5rX25hbWUiOiJCLiBQaWNoaW5jaGEifQ.3IiHUG2IsDkrv1sAMHSk806XRCQdp_a8_6xI_82ILLw';
+
+    print(_token);
     super.initState();
-    _token = Uri.base.queryParameters['token'] ?? 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJMYXJhdmVsSldUIiwic3ViIjo4MCwiaWF0IjoxNzAzODYzNjEyLCJleHAiOjE3MDM4NjQyMTIsIm9yZGVyX2lkIjoiMzI3ODc4IiwidXNlcl9pZCI6ODAsInBheW1lbnRfaWQiOjMyNzgyMywicHJpY2UiOjIxLjk5LCJhY2NvdW50X251bWJlciI6IjIyMDYyMTU3MDEiLCJjaV9udW1iZXIiOiIxMDkxNzg5NzE2MDAxIiwiYWNjb3VudF90eXBlIjoiQWhvcnJvcyIsIm93bmVyX25hbWUiOiJCRUVTIERFTElWRVJZIENJQSBMVERBIiwiZW1haWwiOiJlZGNhaWNlZG8xMkBnbWFpbC5jb20iLCJiYW5rX25hbWUiOiJCLiBQaWNoaW5jaGEifQ.A_u27HjAygLRWsdmiN8vr9FXqiY3a9vQwZaJu0fm_WM';
+
   }
 
 

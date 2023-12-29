@@ -70,7 +70,7 @@ class BankAccountDetails extends StatelessWidget {
       children: [
         Container(
           alignment: Alignment.topLeft,
-          width: 130,
+          width: 120,
           child: Text(
             name,
             style: Theme.of(context).textTheme.headline2!.copyWith(

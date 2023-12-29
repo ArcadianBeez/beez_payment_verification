@@ -151,29 +151,45 @@ class _InstructionsDialogState extends State<InstructionsDialog> {
       ],
     );
   }
+  void _showExpandedImage(BuildContext context, String imagePath) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Container(
+            child: Image.asset(imagePath),
+          ),
+        );
+      },
+    );
+  }
 
-  imageByBank(bankName) {
+
+  Widget imageByBank(String bankName) {
+    String imagePath = bankName.contains('Pichincha')
+        ? 'assets/img/banks/pichincha.jpeg'
+        : bankName.contains('produbanco')
+        ? 'assets/img/banks/produbanco.jpeg'
+        : 'assets/img/banks/otrobanco.jpeg';
+
     return GestureDetector(
-      onTap: _toggleExpansion,
+      onTap: () => _showExpandedImage(context, imagePath),
       child: Stack(
         alignment: Alignment.topCenter, // Alinea el icono en el centro de la parte superior
         children: [
           Image.asset(
-            bankName.contains('Pichincha')
-                ? 'assets/img/banks/pichincha.jpeg'
-                : bankName.contains('produbanco')
-                ? 'assets/img/banks/produbanco.jpeg'
-                : 'assets/img/banks/otrobanco.jpeg', // Asegúrate de tener la ruta correcta aquí
-            width: _width,
-            height: _height,
+            imagePath,
+            width: 500,
+            height: 500,
           ),
-          Positioned(
-            top: 10,
-            left: 0,
-            child: Icon(Icons.expand, color: Colors.black45, size: 50), // Ajusta el tamaño del icono si es necesario
+          const Positioned(
+            bottom: 20,
+            right: 70,
+            child: Icon(Icons.zoom_in, color: Colors.blue, size: 30), // Ajusta el tamaño del icono si es necesario
           ),
         ],
       ),
     );
   }
+
 }

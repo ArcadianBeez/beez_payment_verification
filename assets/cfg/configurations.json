@@ -1,0 +1,6 @@
+{
+  "base_url": "https://service.staging.beez-delivery.com/",
+  "api_base_url": "https://service.staging.beez-delivery.com/api/",
+  "google_maps_key": "AIzaSyBbtM6hTqnRG4khh4dr6pyLZ18UBd4v1lE",
+  "data_fast_url": "https://eu-prod.oppwa.com"
+}

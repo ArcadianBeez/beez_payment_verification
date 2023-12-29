@@ -1,17 +1,21 @@
+import 'dart:convert';
 import 'dart:html';
 import 'dart:typed_data';
-
 import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:global_configuration/global_configuration.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'dialog_instructions_upload.dart';
+import 'package:http/http.dart' as http;
 
 class ImageTransferBankPicker extends StatefulWidget {
   final String bankName;
+  final String token;
 
-  const ImageTransferBankPicker({Key? key, required this.bankName}) : super(key: key);
+  final Function(XFile) onFilePicked;
+
+   ImageTransferBankPicker({Key? key, required this.bankName, required this.token, required this.onFilePicked}) : super(key: key);
 
   @override
   State<ImageTransferBankPicker> createState() => _ImageTransferBankPickerState();
@@ -187,8 +191,6 @@ class _ImageTransferBankPickerState extends State<ImageTransferBankPicker> {
   }
 
   _showDialogWithInstructions() async {
-    print('shodialogw ');
-    print( widget.bankName);
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -198,177 +200,105 @@ class _ImageTransferBankPickerState extends State<ImageTransferBankPicker> {
     );
   }
 
-  // _showDialogWithInstructions() async {
-  //   return showDialog<void>(
-  //     context: context,
-  //     barrierDismissible: false,
-  //     builder: (BuildContext contextDialog) {
-  //       return AlertDialog(
-  //         backgroundColor: Colors.white,
-  //         insetPadding: const EdgeInsets.all(8),
-  //         elevation: 10,
-  //         titlePadding: const EdgeInsets.all(0.0),
-  //         title: Align(
-  //             alignment: AlignmentDirectional.topEnd,
-  //             child: IconButton(
-  //               icon: Icon(Icons.close, color: Theme.of(context).hintColor),
-  //               onPressed: () {
-  //                 Navigator.of(context).pop();
-  //               },
-  //             )),
-  //         content: SingleChildScrollView(
-  //           child: ListBody(
-  //             children: <Widget>[
-  //               Text(
-  //                 'Instrucciones al subir su comprabante',
-  //                 style: Theme.of(context)
-  //                     .textTheme
-  //                     .headlineMedium!
-  //                     .copyWith(fontSize: 14),
-  //                 textAlign: TextAlign.center,
-  //               ),
-  //               Divider(color: Theme.of(context).hintColor),
-  //               const SizedBox(height: 10),
-  //               Container(
-  //                   width: MediaQuery.of(context).size.width * 0.7,
-  //                   child: Column(
-  //                       crossAxisAlignment: CrossAxisAlignment.start,
-  //                       children: [
-  //                         Row(
-  //                           crossAxisAlignment: CrossAxisAlignment.start,
-  //                           children: [
-  //                             Icon(Icons.check,
-  //                                 size: 15, color: Theme.of(context).hintColor),
-  //                             Container(
-  //                               margin: EdgeInsets.only(left: 5, top: 0),
-  //                               width: MediaQuery.of(context).size.width * 0.6,
-  //                               child: Text(
-  //                                   'Recuerde ingresar una captura nítida donde se puedan apreciar todos los valores de la misma.',
-  //                                   style:
-  //                                   Theme.of(context).textTheme.bodyText1),
-  //                             ),
-  //                           ],
-  //                         ),
-  //                         Divider(color: Theme.of(context).hintColor),
-  //                         Row(
-  //                           crossAxisAlignment: CrossAxisAlignment.start,
-  //                           children: [
-  //                             Icon(Icons.check,
-  //                                 size: 15, color: Theme.of(context).hintColor),
-  //                             Container(
-  //                               margin: EdgeInsets.only(left: 5, top: 0),
-  //                               width: MediaQuery.of(context).size.width * 0.6,
-  //                               child: Text(
-  //                                   'Además debe colocar el correo electrónico correctamente para validar el pago.',
-  //                                   style:
-  //                                   Theme.of(context).textTheme.bodyText1),
-  //                             ),
-  //                           ],
-  //                         ),
-  //                         Divider(color: Theme.of(context).hintColor),
-  //                         Row(
-  //                           crossAxisAlignment: CrossAxisAlignment.start,
-  //                           children: [
-  //                             Icon(Icons.check,
-  //                                 size: 15, color: Theme.of(context).hintColor),
-  //                             Container(
-  //                               margin: EdgeInsets.only(left: 5, top: 0),
-  //                               width: MediaQuery.of(context).size.width * 0.6,
-  //                               child: Text(
-  //                                   'El monto a cancelar debe ser el monto del plan + el IVA.',
-  //                                   style:
-  //                                   Theme.of(context).textTheme.bodyText1),
-  //                             ),
-  //                           ],
-  //                         ),
-  //                         Divider(color: Theme.of(context).hintColor),
-  //                         Row(
-  //                           crossAxisAlignment: CrossAxisAlignment.start,
-  //                           children: [
-  //                             Icon(Icons.check,
-  //                                 size: 15, color: Theme.of(context).hintColor),
-  //                             Container(
-  //                               margin: EdgeInsets.only(left: 5, top: 0),
-  //                               width: MediaQuery.of(context).size.width * 0.6,
-  //                               child: Text(
-  //                                   'Después de cargar la imagen de su comprobante de pago, el sistema verificará los datos y acreditará el monto neto correspondiente en su billetera digital.',
-  //                                   style:
-  //                                   Theme.of(context).textTheme.bodyText1),
-  //                             ),
-  //                           ],
-  //                         ),
-  //                         Divider(color: Theme.of(context).hintColor),
-  //                       ])),
-  //               SizedBox(height: 10),
-  //               Text('Por ejemplo:',
-  //                   style: Theme.of(context).textTheme.bodyText1),
-  //               SizedBox(height: 5),
-  //               Image.asset(
-  //                 'assets/img/comprobante.jpeg',
-  //                 width: 300,
-  //                 height: 400,
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //         actions: <Widget>[
-  //           Container(
-  //             padding: EdgeInsets.all(5),
-  //             decoration: BoxDecoration(
-  //               color: Color(0xFF344968),
-  //               borderRadius: BorderRadius.circular(10),
-  //             ),
-  //             child: TextButton(
-  //               child: Text('Galeria',
-  //                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-  //                       fontSize: 14,
-  //                       color: Colors.white,
-  //                       fontWeight: FontWeight.w300)),
-  //               onPressed: () {
-  //                 _getFromGallery();
-  //                 Navigator.pop(contextDialog);
-  //               },
-  //             ),
-  //           )
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
 
   _getFromGallery() async {
     pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
    // imageFile = File(pickedFile!.path);
     if (pickedFile != null) {
       print('selected image');
-      String fileName = '${pickedFile!.path.toString().split('/').last}';
-      const int maxSizeInBytes = 2 * 1024 * 1024;
-      // if ((fileName.endsWith('.jpg') || fileName.endsWith('.jpeg')) && await imageFile!.length() > maxSizeInBytes) {
-      //   showDialog(
-      //     context: _con.scaffoldKey!.currentContext!,
-      //     barrierDismissible: false,
-      //     builder: (BuildContext context) {
-      //       Future.delayed(Duration(seconds: 1), () {
-      //         if (Navigator.of(context).canPop()) {
-      //           Navigator.of(context).pop();
-      //         }
-      //       });
-      //       return Dialog(
-      //         child: Container(
-      //             padding: EdgeInsets.all(20),
-      //             child: Text("Procesando imagen...")),
-      //       );
-      //     },
-      //   );
-      // }
+
       image = pickedFile;
       imageBytes = await image!.readAsBytes();
-      setState(() {});
-      // ResponseCreatePlan response =
-      // await _con.uploadImageToPlan(pickedFile!, _con.plan!.id!.toString());
+      setState(() {
+      });
+
+      widget.onFilePicked(pickedFile!);
+      // var response=await uploadImagePlan(widget.token, widget.pickedFile!);
+      // print(response);
+      // showDialog(context: context, builder: (BuildContext context){
+      //   return AlertDialog(
+      //     content: Text(response),
+      //     actions: [
+      //       TextButton(onPressed: (){
+      //         Navigator.of(context).pop();
+      //       }, child: Text("OK", style: Theme.of(context).textTheme.bodyMedium)),
+      //     ],
+      //   );
+      // });
+
     } else {
       print('No image selected.');
     }
     setState(() {});
   }
+
+  Future<String> uploadImagePlan(String token, XFile? image) async {
+    final String url =
+        '${GlobalConfiguration().getValue('api_base_url')}validate_image_metadata';
+
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse(url),
+    );
+
+    // Añadir el encabezado de autorización
+    request.headers['Authorization'] = 'Bearer $token';
+
+    if (image != null && image.path != '') {
+      String fileName = image.path.split('/').last;
+      Uint8List data = await image.readAsBytes();
+      List<int> list = data.cast();
+      request.files.add(http.MultipartFile.fromBytes('file', list, filename: fileName));
+    }
+
+    // Corregir la estructura de los datos para que sea un Map en lugar de un Set
+    Map<String, String> productObj = {
+      "meta_json": json.encode({
+        "fileName": "96c96c2f-a611-4d43-a887-c111607d92c8.jpeg",
+        "fileSize": "27kB",
+        "fileType": "JPEG",
+        "fileExtension": "jpg",
+        "mimeType": "image/jpeg",
+        "jfifVersion": "1.01",
+        "resolutionUnit": "None",
+        "xResolution": 1,
+        "yResolution": 1,
+        "imageWidth": 375,
+        "imageHeight": 629,
+        "encodingProcess": "Progressive DCT, Huffman coding",
+        "bitsPerSample": 8,
+        "colorComponents": 3,
+        "yCbCrSubsampling": "YCbCr4:2:0 (2 2)",
+        "imageSize": "375x629",
+        "megapixels": 0.236,
+        "category": "image"
+      })
+    };
+    request.fields.addAll(productObj);
+
+    var res = await request.send();
+    var response = await http.Response.fromStream(res);
+    print(response.body);
+    print(response.statusCode);
+    try {
+      var res = await request.send();
+      var response = await http.Response.fromStream(res);
+      if (response.statusCode == 200) {
+
+        return "Image subida exitosamente";
+      } else {
+        var responseData = json.decode(response.body);
+        if (responseData is Map && responseData.containsKey('message')) {
+          return responseData['message'];
+        } else {
+          return "Unknown error occurred";
+        }
+      }
+    } on FormatException catch (e) {
+      return "Syntax error, malformed JSON: ${e.message}";
+    } catch (e) {
+      return "An error occurred: ${e.toString()}";
+    }
+  }
+
 }
