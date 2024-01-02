@@ -34,6 +34,10 @@ class _InstructionsDialogState extends State<InstructionsDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      shadowColor: Colors.black,
       backgroundColor: Colors.white,
       insetPadding: const EdgeInsets.all(8),
       elevation: 10,
@@ -50,11 +54,11 @@ class _InstructionsDialogState extends State<InstructionsDialog> {
         child: ListBody(
           children: <Widget>[
             Text(
-              'Instrucciones al subir su comprabante',
+              'Instrucciones al subir su comprobante',
               style: Theme.of(context)
                   .textTheme
-                  .headlineMedium!
-                  .copyWith(fontSize: 14),
+                  .bodyMedium!
+                  .copyWith(fontSize: 15, fontWeight: FontWeight.w800, letterSpacing: 1),
               textAlign: TextAlign.center,
             ),
             Divider(color: Theme.of(context).hintColor),
