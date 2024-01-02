@@ -119,7 +119,8 @@ class _ImageTransferBankPickerState extends State<ImageTransferBankPicker> {
                                       color: Colors.white),
                                   child:  Icon(Icons.info,
                                       size: 20,
-                                    color: Theme.of(context).colorScheme.secondary,
+                                    color: Theme.of(context).hintColor,
+
                                       //color: Colors.green
                                   ),
                                 ))),
@@ -135,7 +136,7 @@ class _ImageTransferBankPickerState extends State<ImageTransferBankPicker> {
                                       borderRadius:
                                           BorderRadius.circular(5),
                                      // color: Colors.green
-                                    color: Theme.of(context).colorScheme.secondary,
+                                    color: Theme.of(context).hintColor,
                                   ),
                                   child: Text(
                                       'Recuerda subir tu comprobante de pago siguiendo las instrucciones de nuestro tutorial para garantizar una aprobación rápida y sin inconvenientes.',
@@ -145,8 +146,7 @@ class _ImageTransferBankPickerState extends State<ImageTransferBankPicker> {
                                           .copyWith(
                                               fontSize: 13,
                                               fontWeight: FontWeight.w500,
-                                        color: Theme.of(context).hintColor,
-                                             // color: Colors.white
+                                              color: Colors.white
                                       )),
                                 ))
                             : Container()

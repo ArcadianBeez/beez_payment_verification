@@ -126,7 +126,7 @@ class BankAccountDetails extends StatelessWidget {
             Clipboard.setData(ClipboardData(text: value));
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Copiado: $name'),
+                content: Text('Copiado: $value'),
                 duration: const Duration(seconds: 3),
               ),
             );
