@@ -37,7 +37,7 @@ class BankTransferInfo {
       // sub: json['sub'],
      // iat: json['iat']!=null?json['iat']:0,
       //exp: json['exp'],
-      orderId: json['order_id'],
+      orderId: json['order_id'].toString(),
       userId: json['user_id'],
       paymentId: json['payment_id'],
       price: json['price'].toDouble(),

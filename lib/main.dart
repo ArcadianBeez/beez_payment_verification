@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:js_util';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
@@ -7,6 +10,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'config/app_config.dart' as config;
 import 'firebase_options.dart';
 import 'generated/i18n.dart';
+import 'package:http/http.dart' as http;
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -105,13 +110,16 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String _token = '';
+  bool isLoaded=true;
 
   @override
   void initState() {
     print(Uri.base);
 
+
     //_token = Uri.base.queryParameters['token'] ?? 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJMYXJhdmVsSldUIiwic3ViIjo1MTI4MiwiaWF0IjoxNzAzODc4MzA0LCJleHAiOjE3MDM4Nzg5MDQsIm9yZGVyX2lkIjoiMzI3ODg0IiwidXNlcl9pZCI6NTEyODIsInBheW1lbnRfaWQiOjMyNzgyOSwicHJpY2UiOjIuMjUsImFjY291bnRfbnVtYmVyIjoiMjIwNjIxNTcwMSIsImNpX251bWJlciI6IjEwOTE3ODk3MTYwMDEiLCJhY2NvdW50X3R5cGUiOiJBaG9ycm9zIiwib3duZXJfbmFtZSI6IkJFRVMgREVMSVZFUlkgQ0lBIExUREEiLCJlbWFpbCI6ImVkY2FpY2VkbzEyQGdtYWlsLmNvbSIsImJhbmtfbmFtZSI6IkIuIFBpY2hpbmNoYSJ9.IZIe99tSW-u6sQVaS1gCqwwx6t3k29Q3EvV1NfmOrEY';
-   _token = Uri.base.queryParameters['token'] ??  'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJMYXJhdmVsSldUIiwic3ViIjo1MTI4MiwiaWF0IjoxNzAzODgzMjgzLCJvcmRlcl9pZCI6IjMyNzg4MyIsInVzZXJfaWQiOjUxMjgyLCJwYXltZW50X2lkIjozMjc4MjgsInByaWNlIjoyLjI1LCJhY2NvdW50X251bWJlciI6IjIyMDYyMTU3MDEiLCJjaV9udW1iZXIiOiIxMDkxNzg5NzE2MDAxIiwiYWNjb3VudF90eXBlIjoiQWhvcnJvcyIsIm93bmVyX25hbWUiOiJCRUVTIERFTElWRVJZIENJQSBMVERBIiwiZW1haWwiOiJlZGNhaWNlZG8xMkBnbWFpbC5jb20iLCJiYW5rX25hbWUiOiJCLiBQaWNoaW5jaGEifQ.4G0cqa9PY98hzlW8egzVLF-8QZFV4wpIU5yY6TVelDA';
+   _token = Uri.base.queryParameters[1] ??  '195e19be-2ae6-444c-b4ca-feac938f3079';
+    loadToken();
    // _token=Uri.base.queryParameters['token']??'hfrbfjr';
 
     print(_token);
@@ -119,9 +127,37 @@ class _MyHomePageState extends State<MyHomePage> {
 
   }
 
+  loadToken() async{
+setState(() {
+  isLoaded=true;
+});
+    _token= await getToken(_token);
+    setState(() {
+      isLoaded=false;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    return  BankAccountInfoUploader(jwt: _token);
+    return !isLoaded?  BankAccountInfoUploader(jwt: _token):
+    Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
+  Future<String> getToken(String uuid) async {
+    final String _apiToken = '?api_token=wvSij4xlWvsPR37f96TWYO5o64GfwsYWKwAyAsyXVqBz2AmaYwpxeMDjRFY1&';
+    final String url =
+        '${GlobalConfiguration().getValue('api_base_url')}get_token_with_uuid${_apiToken}uuid=$uuid';
+   print('ruta');
+    print(url);
+    final response = await http.get(Uri.parse(url));
+    var order = json.decode(response.body);
+    print('uuuid');
+    print(order);
+    return order['token'];
   }
 }
