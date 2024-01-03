@@ -129,7 +129,7 @@ class _ImageTransferBankPickerState extends State<ImageTransferBankPicker> {
                                 top: 2,
                                 left: 40,
                                 child: Container(
-                                  height: 120,
+                                  height: 140,
                                   width: 200,
                                   padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
@@ -138,16 +138,32 @@ class _ImageTransferBankPickerState extends State<ImageTransferBankPicker> {
                                      // color: Colors.green
                                     color: Theme.of(context).hintColor,
                                   ),
-                                  child: Text(
-                                      'Recuerda subir tu comprobante de pago siguiendo las instrucciones de nuestro tutorial para garantizar una aprobación rápida y sin inconvenientes.',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1!
-                                          .copyWith(
-                                              fontSize: 13,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.white
-                                      )),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                          'Recuerda subir tu comprobante de pago siguiendo las instrucciones de nuestro tutorial para garantizar una aprobación rápida y sin inconvenientes.',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1!
+                                              .copyWith(
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.white
+                                          )),
+SizedBox(height: 10),
+                                      Text('VER TUTORIAL',
+
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1!
+                                              .copyWith(
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.blue,
+                                                  decoration: TextDecoration.underline
+                                          )),
+                                    ],
+                                  ),
                                 ))
                             : Container()
                       ],

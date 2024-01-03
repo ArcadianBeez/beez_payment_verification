@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -26,29 +25,16 @@ class BankAccountDetails extends StatelessWidget {
       child: Center(
         child: Column(
           children: [
-            // Text(
-            //   'DATOS DE LA CUENTA BANCARIA',
-            //   style: Theme.of(context).textTheme.headline2!.copyWith(
-            //         // color: Colors.white,
-            //         fontSize: 16,
-            //         fontWeight: FontWeight.bold,
-            //       ),
-            // ),
-            // Divider(color: Theme.of(context).hintColor),
             Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
               // margin: const EdgeInsets.symmetric(horizontal: 20),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.secondary,
-                borderRadius: BorderRadius.circular(10),
-              ),
+              // decoration: BoxDecoration(
+              //   color: Theme.of(context).colorScheme.secondary,
+              //   borderRadius: BorderRadius.circular(10),
+              // ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(width: 20),
-                  //  Image.asset('assets/img/logo.png', width: 30, height: 30,),
-
-                  const SizedBox(width: 10),
                   Text(
                     "DATOS DE LA CUENTA BANCARIA",
                     style:
@@ -58,7 +44,6 @@ class BankAccountDetails extends StatelessWidget {
                             fontSize: 15,
                             fontWeight: FontWeight.w600)),
                   ),
-                  const SizedBox(width: 20),
                 ],
               ),
             ),
@@ -68,31 +53,31 @@ class BankAccountDetails extends StatelessWidget {
                 children: [
                   const SizedBox(height: 5),
                   buildRowInfoBank(
-                      context, 'NOMBRE BANCO:', bankInfo.bankName ?? 'N/A'),
+                      context, 'Nombre del banco:', bankInfo.bankName ?? 'N/A', false),
                   const SizedBox(height: 5),
-                  buildRowInfoBank(context, 'NUMERO CUENTA:',
-                      bankInfo.accountNumber ?? 'N/A'),
-                  const SizedBox(height: 5),
-                  buildRowInfoBank(
-                      context, 'IDENTIFICACION:', bankInfo.ciNumber ?? 'N/A'),
+                  buildRowInfoBank(context, 'Número de cuenta:',
+                      bankInfo.accountNumber ?? 'N/A', true),
                   const SizedBox(height: 5),
                   buildRowInfoBank(
-                      context, 'TIPO:', bankInfo.accountType ?? 'N/A'),
+                      context, 'Identificación:', bankInfo.ciNumber ?? 'N/A', true),
                   const SizedBox(height: 5),
                   buildRowInfoBank(
-                      context, 'NOMBRE:', bankInfo.ownerName ?? 'N/A'),
+                      context, 'Tipo:', bankInfo.accountType ?? 'N/A', false),
                   const SizedBox(height: 5),
-                  buildRowInfoBank(context, 'EMAIL:', bankInfo.email ?? 'N/A'),
+                  buildRowInfoBank(
+                      context, 'Nombre:', bankInfo.ownerName ?? 'N/A', true),
                   const SizedBox(height: 5),
-                  buildRowInfoBank(context, 'TOTAL A PAGAR:',
-                      '\$${bankInfo.price.toStringAsFixed(2)}'),
+                  buildRowInfoBank(context, 'Email:', bankInfo.email ?? 'N/A', true),
+                  const SizedBox(height: 5),
+                  buildRowInfoBank(context, 'Total a pagar:',
+                      '\$${bankInfo.price.toStringAsFixed(2)}', false),
                   Divider(color: Theme.of(context).hintColor),
                 ],
               ),
             ),
             const SizedBox(height: 5),
             Text(
-              '⚠️ Obligatorio: \n\nPara validar el pago, por favor colocar el correo electrónico correctamente y subir el comprobante de pago.',
+              'Obligatorio: Para validar el pago, por favor leer el tutorial, colocar el correo electrónico correctamente y subir el comprobante de pago.',
               style: Theme.of(context).textTheme.headline2!.copyWith(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
@@ -104,7 +89,7 @@ class BankAccountDetails extends StatelessWidget {
     );
   }
 
-  Row buildRowInfoBank(BuildContext context, String name, String value) {
+  Row buildRowInfoBank(BuildContext context, String name, String value, bool isCopyable) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -114,14 +99,26 @@ class BankAccountDetails extends StatelessWidget {
           child: Text(
             name,
             style: Theme.of(context).textTheme.headline2!.copyWith(
-                  // color: Colors.white,
-                  fontSize: 13,
+                  fontSize: 14,
                   fontWeight: FontWeight.w600,
                 ),
           ),
         ),
         const SizedBox(width: 10),
-        GestureDetector(
+
+
+    Row(
+      children: [
+        Text(
+                value,
+                style: Theme.of(context).textTheme.headline2!.copyWith(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: 0.4,
+                    ),
+              ),
+        const SizedBox(width: 5),
+        isCopyable? GestureDetector(
           onTap: () {
             Clipboard.setData(ClipboardData(text: value));
             ScaffoldMessenger.of(context).showSnackBar(
@@ -131,16 +128,11 @@ class BankAccountDetails extends StatelessWidget {
               ),
             );
           },
-          child: Text(
-            value,
-            style: Theme.of(context).textTheme.headline2!.copyWith(
-                  // color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  letterSpacing: 0.4,
-                ),
-          ),
-        ),
+          child: Icon(Icons.copy, size: 15, color: Theme.of(context).hintColor),
+        ) : const SizedBox(),
+      ],
+    ),
+
       ],
     );
   }

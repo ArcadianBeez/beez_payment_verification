@@ -4,15 +4,15 @@ class InstructionsDialog extends StatefulWidget {
   final VoidCallback getFromGalleryCallback;
   final String bankName;
 
-  InstructionsDialog({Key? key, required this.getFromGalleryCallback, required this.bankName}) : super(key: key);
+  InstructionsDialog(
+      {Key? key, required this.getFromGalleryCallback, required this.bankName})
+      : super(key: key);
 
   @override
   _InstructionsDialogState createState() => _InstructionsDialogState();
 }
 
 class _InstructionsDialogState extends State<InstructionsDialog> {
-
-
   double _width = 500;
   double _height = 500;
   bool _isExpanded = false;
@@ -23,18 +23,21 @@ class _InstructionsDialogState extends State<InstructionsDialog> {
         _width = 500;
         _height = 500;
       } else {
-        _width = MediaQuery.of(context).size.width; // o un tamaño específico más grande
-        _height = MediaQuery.of(context).size.height; // o un tamaño específico más grande
+        _width = MediaQuery.of(context)
+            .size
+            .width; // o un tamaño específico más grande
+        _height = MediaQuery.of(context)
+            .size
+            .height; // o un tamaño específico más grande
       }
       _isExpanded = !_isExpanded;
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-shape: RoundedRectangleBorder(
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
       shadowColor: Colors.black,
@@ -55,10 +58,8 @@ shape: RoundedRectangleBorder(
           children: <Widget>[
             Text(
               'Instrucciones al subir su comprobante',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium!
-                  .copyWith(fontSize: 15, fontWeight: FontWeight.w800, letterSpacing: 1),
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  fontSize: 16, fontWeight: FontWeight.w800, letterSpacing: 1),
               textAlign: TextAlign.center,
             ),
             Divider(color: Theme.of(context).hintColor),
@@ -77,8 +78,11 @@ shape: RoundedRectangleBorder(
                             margin: EdgeInsets.only(left: 5, top: 0),
                             width: MediaQuery.of(context).size.width * 0.7,
                             child: Text(
-                                'La imagen debe ser una captura de pantalla del comprobante de transferencia que incluya la hora visible. Todos los detalles importantes, marcados con puntos rojos, deben estar claramente visibles.',
-                                style: Theme.of(context).textTheme.bodyText1),
+                                'La imagen debe ser una captura de pantalla del comprobante de transferencia que incluya la hora visible.',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(fontSize: 14)),
                           ),
                         ],
                       ),
@@ -100,12 +104,13 @@ shape: RoundedRectangleBorder(
                           SizedBox(width: 5),
                           Container(
                             margin: EdgeInsets.only(top: 0),
-                            width: MediaQuery.of(context).size.width *
-                                0.7, // Ajuste del ancho
+                            width: MediaQuery.of(context).size.width * 0.7,
                             child: Text(
-                              'Todos los detalles importantes, marcados con puntos rojos, deben estar claramente visibles.',
-                              style: Theme.of(context).textTheme.bodyText1,
-                            ),
+                                'Todos los detalles importantes, marcados con puntos rojos, deben estar claramente visibles.',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(fontSize: 14)),
                           ),
                         ],
                       ),
@@ -116,18 +121,24 @@ shape: RoundedRectangleBorder(
                           Icon(Icons.check,
                               size: 15, color: Theme.of(context).hintColor),
                           Container(
-                            margin: const EdgeInsets.only(left: 5, top: 0),
-                            width: MediaQuery.of(context).size.width * 0.7,
-                            child: Text(
-                                'Al final te dejamos el ejemplo proporcionado para ver cómo debe lucir tu comprobante de pago.',
-                                style: Theme.of(context).textTheme.bodyText1),
-                          ),
+                              margin: const EdgeInsets.only(left: 5, top: 0),
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              child: Text(
+                                  'Al final te dejamos el ejemplo proporcionado para ver cómo debe lucir tu comprobante de pago.',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1!
+                                      .copyWith(fontSize: 14))),
                         ],
                       ),
                       Divider(color: Theme.of(context).hintColor),
                     ])),
             const SizedBox(height: 10),
-            Text('Por ejemplo:', style: Theme.of(context).textTheme.bodyText1),
+            Text('El comprobante de pago se debe ver como, (ejemplo):',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1!
+                    .copyWith(fontSize: 14)),
             const SizedBox(height: 5),
             imageByBank(widget.bankName)
           ],
@@ -135,17 +146,19 @@ shape: RoundedRectangleBorder(
       ),
       actions: <Widget>[
         Container(
-          padding: EdgeInsets.all(5),
+          alignment: Alignment.center,
+          padding: const EdgeInsets.all(5),
           decoration: BoxDecoration(
-            color: Color(0xFF344968),
+            color: const Color(0xFF344968),
             borderRadius: BorderRadius.circular(10),
           ),
-          child: TextButton(
-            child: Text('Galeria',
+          child: MaterialButton(
+            minWidth: 200,
+            child: Text('Ir a galería',
                 style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                    fontSize: 14,
+                    fontSize: 16,
                     color: Colors.white,
-                    fontWeight: FontWeight.w300)),
+                    fontWeight: FontWeight.w600)),
             onPressed: () {
               widget.getFromGalleryCallback();
               Navigator.pop(context);
@@ -155,6 +168,7 @@ shape: RoundedRectangleBorder(
       ],
     );
   }
+
   void _showExpandedImage(BuildContext context, String imagePath) {
     showDialog(
       context: context,
@@ -168,32 +182,40 @@ shape: RoundedRectangleBorder(
     );
   }
 
-
   Widget imageByBank(String bankName) {
     String imagePath = bankName.contains('Pichincha')
         ? 'assets/img/banks/pichincha.jpeg'
         : bankName.contains('produbanco')
-        ? 'assets/img/banks/produbanco.jpeg'
-        : 'assets/img/banks/otrobanco.jpeg';
+            ? 'assets/img/banks/produbanco.jpeg'
+            : 'assets/img/banks/otrobanco.jpeg';
 
     return GestureDetector(
       onTap: () => _showExpandedImage(context, imagePath),
       child: Stack(
-        alignment: Alignment.topCenter, // Alinea el icono en el centro de la parte superior
+        alignment: Alignment.topCenter,
         children: [
           Image.asset(
             imagePath,
             width: 500,
             height: 500,
           ),
-          const Positioned(
+          Positioned(
             bottom: 20,
             right: 70,
-            child: Icon(Icons.zoom_in, color: Colors.blue, size: 30), // Ajusta el tamaño del icono si es necesario
+            child: Container(
+              width: 40,
+              height: 40,
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+              child: Icon(Icons.zoom_in,
+                  color: Theme.of(context).hintColor, size: 25),
+            ),
           ),
         ],
       ),
     );
   }
-
 }

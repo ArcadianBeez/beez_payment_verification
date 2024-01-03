@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:js_util';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
@@ -12,7 +10,6 @@ import 'firebase_options.dart';
 import 'generated/i18n.dart';
 import 'package:http/http.dart' as http;
 
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -20,7 +17,7 @@ Future<void> main() async {
   );
   await GlobalConfiguration().loadFromAsset("configurations");
   usePathUrlStrategy();
-  runApp( MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -28,7 +25,6 @@ class MyApp extends StatelessWidget {
 
   ThemeData lightTheme = ThemeData(
     scrollbarTheme: ScrollbarThemeData(
-      //isAlwaysShown: true,
         thickness: MaterialStateProperty.all(3),
         radius: const Radius.circular(10),
         minThumbLength: 100),
@@ -71,12 +67,15 @@ class MyApp extends StatelessWidget {
           fontWeight: FontWeight.w600,
           color: config.Colors().mainColor(1)),
       bodyText1:
-      TextStyle(fontSize: 12.0, color: config.Colors().secondColor(1)),
+          TextStyle(fontSize: 12.0, color: config.Colors().secondColor(1)),
       bodyText2:
-      TextStyle(fontSize: 14.0, color: config.Colors().secondColor(1)),
+          TextStyle(fontSize: 14.0, color: config.Colors().secondColor(1)),
       caption: TextStyle(fontSize: 12.0, color: config.Colors().accentColor(1)),
-    ), colorScheme: ColorScheme.fromSwatch().copyWith(secondary: config.Colors().mainColor(1)),
+    ),
+    colorScheme: ColorScheme.fromSwatch()
+        .copyWith(secondary: config.Colors().mainColor(1)),
   );
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -84,17 +83,14 @@ class MyApp extends StatelessWidget {
       title: 'Beez',
       home: const MyHomePage(),
       theme: lightTheme,
-      localizationsDelegates: [
+      localizationsDelegates: const [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: S.delegate.supportedLocales,
       localeListResolutionCallback:
-      S.delegate.listResolution(fallback: const Locale('en', '')),
-      navigatorObservers: [
-        // FirebaseAnalyticsObserver(analytics: analytics),
-      ],
+          S.delegate.listResolution(fallback: const Locale('en', '')),
     );
   }
 }
@@ -102,62 +98,58 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
-
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   String _token = '';
-  bool isLoaded=true;
+  String _uuid = '';
+  bool isLoaded = true;
 
   @override
   void initState() {
     print(Uri.base);
-
-
-    //_token = Uri.base.queryParameters['token'] ?? 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJMYXJhdmVsSldUIiwic3ViIjo1MTI4MiwiaWF0IjoxNzAzODc4MzA0LCJleHAiOjE3MDM4Nzg5MDQsIm9yZGVyX2lkIjoiMzI3ODg0IiwidXNlcl9pZCI6NTEyODIsInBheW1lbnRfaWQiOjMyNzgyOSwicHJpY2UiOjIuMjUsImFjY291bnRfbnVtYmVyIjoiMjIwNjIxNTcwMSIsImNpX251bWJlciI6IjEwOTE3ODk3MTYwMDEiLCJhY2NvdW50X3R5cGUiOiJBaG9ycm9zIiwib3duZXJfbmFtZSI6IkJFRVMgREVMSVZFUlkgQ0lBIExUREEiLCJlbWFpbCI6ImVkY2FpY2VkbzEyQGdtYWlsLmNvbSIsImJhbmtfbmFtZSI6IkIuIFBpY2hpbmNoYSJ9.IZIe99tSW-u6sQVaS1gCqwwx6t3k29Q3EvV1NfmOrEY';
-   _token = Uri.base.queryParameters['uuid'] ??  '32897e3d-33d0-4590-8ea9-b5075b18e4f6';
+    _uuid = Uri.base.queryParameters['uuid'] ??
+        'e0c2853a-6a34-43cc-859d-7484650765b0';
     loadToken();
-   // _token=Uri.base.queryParameters['token']??'hfrbfjr';
 
-    print(_token);
     super.initState();
-
   }
 
-  loadToken() async{
-setState(() {
-  isLoaded=true;
-});
-    _token= await getToken(_token);
+  loadToken() async {
     setState(() {
-      isLoaded=false;
+      isLoaded = true;
+    });
+    _token = await getToken(_uuid);
+    setState(() {
+      isLoaded = false;
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return !isLoaded?  BankAccountInfoUploader(jwt: _token):
-    Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
+    return !isLoaded
+        ? BankAccountInfoUploader(jwt: _token)
+        : const Scaffold(
+            backgroundColor: Colors.white,
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
   }
 
   Future<String> getToken(String uuid) async {
-    final String _apiToken = '?api_token=wvSij4xlWvsPR37f96TWYO5o64GfwsYWKwAyAsyXVqBz2AmaYwpxeMDjRFY1&';
+    const String apiToken =
+        '?api_token=wvSij4xlWvsPR37f96TWYO5o64GfwsYWKwAyAsyXVqBz2AmaYwpxeMDjRFY1&';
     final String url =
-        '${GlobalConfiguration().getValue('api_base_url')}get_token_with_uuid${_apiToken}uuid=$uuid';
-   print('ruta');
-    print(url);
+        '${GlobalConfiguration().getValue('api_base_url')}get_token_with_uuid${apiToken}uuid=$uuid';
     final response = await http.get(Uri.parse(url));
-    var order = json.decode(response.body);
-    print('uuuid');
-    print(order);
-    return order['token'];
+
+    var request = json.decode(response.body);
+    if (!request['status']) {
+      return '';
+    }
+    return request['token'];
   }
 }
