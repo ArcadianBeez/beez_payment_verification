@@ -106,12 +106,13 @@ class _MyHomePageState extends State<MyHomePage> {
   String _token = '';
   String _uuid = '';
   bool isLoaded = true;
+  bool isInvalid = false;
 
   @override
   void initState() {
     print(Uri.base);
     _uuid = Uri.base.queryParameters['uuid'] ??
-        'e0c2853a-6a34-43cc-859d-7484650765b0';
+        'd1f4de51-ee5b-4953-8067-5a6895de5fca';
     loadToken();
 
     super.initState();
@@ -129,14 +130,29 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return !isLoaded
-        ? BankAccountInfoUploader(jwt: _token)
-        : const Scaffold(
-            backgroundColor: Colors.white,
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
+    if (!isLoaded && !isInvalid) {
+      return BankAccountInfoUploader(jwt: _token);
+    } else if (isInvalid) {
+      return Scaffold(
+        backgroundColor: Colors.white,
+        body:
+          Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                   Text(_token),
+                  const Text('Por favor, contacte al administrador')
+                ],
+              ))
+      );
+    } else {
+      return const Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
   }
 
   Future<String> getToken(String uuid) async {
@@ -148,7 +164,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
     var request = json.decode(response.body);
     if (!request['status']) {
-      return '';
+      setState(() {
+        isInvalid = true;
+      });
+      return request['message'];
     }
     return request['token'];
   }
