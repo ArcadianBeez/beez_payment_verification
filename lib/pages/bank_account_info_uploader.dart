@@ -10,6 +10,7 @@ import '../elements/image_transfer_bank_picker.dart';
 import '../models/bank_transfer_info.dart';
 import 'package:http/http.dart' as http;
 import 'dart:js' as js;
+import 'dart:ui' as ui;
 
 class BankAccountInfoUploader extends StatefulWidget {
   final String jwt;
@@ -260,6 +261,11 @@ class _BankAccountInfoUploaderState extends State<BankAccountInfoUploader> {
       String screenHeight = Sizes['height'].toString();
       String screenWidth = Sizes['width'].toString();
 
+      Uint8List imageData = await image.readAsBytes();
+      ui.Image decodedImage = await decodeImageFromList(imageData);
+      String imageWidth = decodedImage.width.toString();
+      String imageHeight = decodedImage.height.toString();
+
       Uint8List data = await image.readAsBytes();
       List<int> list = data.cast();
       request.files
@@ -273,19 +279,10 @@ class _BankAccountInfoUploaderState extends State<BankAccountInfoUploader> {
           "fileExtension": fileName.split('.').last,
           "mimeType": fileType,
           "lastModified": lastModified.toString(),
-          // "jfifVersion": "1.01",
-          // "resolutionUnit": "None",
-          // "xResolution": 1,
-          // "yResolution": 1,
-          "imageWidth": screenWidth,
-          "imageHeight": screenHeight,
-          // "encodingProcess": "Progressive DCT, Huffman coding",
-          // "bitsPerSample": 8,
-          // "colorComponents": 3,
-          // "yCbCrSubsampling": "YCbCr4:2:0 (2 2)",
-          // "imageSize": "375x629",
-          // "megapixels": 0.236,
-          // "category": "image"
+          "screenWidth": screenWidth,
+          "screenHeight": screenHeight,
+          "imageWidth":  imageWidth,
+           "imageHeight":imageHeight,
         })
       };
       request.fields.addAll(fileDetails);
