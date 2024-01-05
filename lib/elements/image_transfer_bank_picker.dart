@@ -44,12 +44,11 @@ class _ImageTransferBankPickerState extends State<ImageTransferBankPicker> {
                 _showDialogWithInstructions();
               },
               child: Container(
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 25),
+                margin: const EdgeInsets.symmetric(horizontal: 25),
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height*0.55,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20)),
+                height: MediaQuery.of(context).size.height * 0.55,
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(20)),
                 child: DottedBorder(
                     borderType: BorderType.RRect,
                     radius: const Radius.circular(20),
@@ -61,8 +60,7 @@ class _ImageTransferBankPickerState extends State<ImageTransferBankPicker> {
                         pickedFile == null
                             ? Center(
                                 child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     SizedBox(
                                       width: 80,
@@ -86,18 +84,15 @@ class _ImageTransferBankPickerState extends State<ImageTransferBankPicker> {
                                   ],
                                 ),
                               )
-                            :
-                            pickedFile == null
+                            : pickedFile == null
                                 ? SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width,
+                                    width: MediaQuery.of(context).size.width,
                                     height: 500,
                                     child: Container())
                                 : Center(
                                     child: SizedBox(
-                                        width: MediaQuery.of(context)
-                                            .size
-                                            .width,
+                                        width:
+                                            MediaQuery.of(context).size.width,
                                         height: 600,
                                         child: Image.memory(
                                           imageBytes!,
@@ -117,11 +112,12 @@ class _ImageTransferBankPickerState extends State<ImageTransferBankPicker> {
                                   decoration: const BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: Colors.white),
-                                  child:  Icon(Icons.info,
-                                      size: 20,
+                                  child: Icon(
+                                    Icons.info,
+                                    size: 20,
                                     color: Theme.of(context).hintColor,
 
-                                      //color: Colors.green
+                                    //color: Colors.green
                                   ),
                                 ))),
                         visibleInfoImage
@@ -129,13 +125,13 @@ class _ImageTransferBankPickerState extends State<ImageTransferBankPicker> {
                                 top: 2,
                                 left: 40,
                                 child: Container(
-                                  height: 140,
-                                  width: 200,
+                                  height: MediaQuery.of(context).size.height *
+                                      0.16,
+                                  width: MediaQuery.of(context).size.width * 0.5,
                                   padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.circular(5),
-                                     // color: Colors.green
+                                    borderRadius: BorderRadius.circular(5),
+                                    // color: Colors.green
                                     color: Theme.of(context).hintColor,
                                   ),
                                   child: Column(
@@ -148,11 +144,9 @@ class _ImageTransferBankPickerState extends State<ImageTransferBankPicker> {
                                               .copyWith(
                                                   fontSize: 13,
                                                   fontWeight: FontWeight.w500,
-                                                  color: Colors.white
-                                          )),
-SizedBox(height: 10),
+                                                  color: Colors.white)),
+                                     const SizedBox(height: 10),
                                       Text('VER TUTORIAL',
-
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodyText1!
@@ -160,8 +154,8 @@ SizedBox(height: 10),
                                                   fontSize: 13,
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.blue,
-                                                  decoration: TextDecoration.underline
-                                          )),
+                                                  decoration: TextDecoration
+                                                      .underline)),
                                     ],
                                   ),
                                 ))

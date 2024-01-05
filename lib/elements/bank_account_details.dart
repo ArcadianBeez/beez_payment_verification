@@ -70,7 +70,7 @@ class BankAccountDetails extends StatelessWidget {
             ),
             const SizedBox(height: 5),
             Text(
-              'Obligatorio: Para validar el pago, por favor leer el tutorial, colocar el correo electrónico correctamente y subir el comprobante de pago.',
+              'Obligatorio: Para validar el pago, por favor colocar el correo electrónico correctamente y subir el comprobante de pago.',
               style: Theme.of(context).textTheme.headline2!.copyWith(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,

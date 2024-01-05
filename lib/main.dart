@@ -112,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     print(Uri.base);
     _uuid = Uri.base.queryParameters['uuid'] ??
-        'd1f4de51-ee5b-4953-8067-5a6895de5fca';
+        'a4d363e7-8cb4-474c-afac-21e56225c744';
     loadToken();
 
     super.initState();
