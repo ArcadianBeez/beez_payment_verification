@@ -140,6 +140,7 @@ class _BankAccountInfoUploaderState extends State<BankAccountInfoUploader> {
 
   Future<dynamic> buildShowDialogResponse(context, String response) {
     return showDialog(
+        barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
@@ -180,8 +181,9 @@ class _BankAccountInfoUploaderState extends State<BankAccountInfoUploader> {
                             fontWeight: FontWeight.w800)),
                   ),
                   const SizedBox(height: 10),
-                  Text('Pronto revisaremos tu transacción; este proceso suele tardar aproximadamente un minuto. Una vez que la transacción sea aprobada, continuaremos con el procesamiento de tu pedido.',
-                      textAlign: TextAlign.center ,
+                  Text(
+                      'Pronto revisaremos tu transacción; este proceso suele tardar aproximadamente un minuto. Una vez que la transacción sea aprobada, continuaremos con el procesamiento de tu pedido.',
+                      textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.headline4!.merge(
                           TextStyle(
                               color: Theme.of(context).hintColor,
@@ -221,19 +223,19 @@ class _BankAccountInfoUploaderState extends State<BankAccountInfoUploader> {
               ),
             ),
             actions: [
-              MaterialButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  color: Theme.of(context).colorScheme.secondary,
-                  minWidth: double.infinity,
-                  height: 40,
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text("OK",
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            fontWeight: FontWeight.w800,
-                          ))),
+              // MaterialButton(
+              //     shape: RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.circular(10)),
+              //     color: Theme.of(context).colorScheme.secondary,
+              //     minWidth: double.infinity,
+              //     height: 40,
+              //     onPressed: () {
+              //       Navigator.of(context).pop();
+              //     },
+              //     child: Text("OK",
+              //         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+              //               fontWeight: FontWeight.w800,
+              //             ))),
             ],
             actionsPadding:
                 const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -281,8 +283,8 @@ class _BankAccountInfoUploaderState extends State<BankAccountInfoUploader> {
           "lastModified": lastModified.toString(),
           "screenWidth": screenWidth,
           "screenHeight": screenHeight,
-          "imageWidth":  imageWidth,
-           "imageHeight":imageHeight,
+          "imageWidth": imageWidth,
+          "imageHeight": imageHeight,
         })
       };
       request.fields.addAll(fileDetails);
