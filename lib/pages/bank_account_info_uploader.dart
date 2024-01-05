@@ -181,6 +181,7 @@ class _BankAccountInfoUploaderState extends State<BankAccountInfoUploader> {
                             fontWeight: FontWeight.w800)),
                   ),
                   const SizedBox(height: 10),
+                  response == 'Comprobante cargado con éxito'?
                   Text(
                       'Pronto revisaremos tu transacción; este proceso suele tardar aproximadamente un minuto. Una vez que la transacción sea aprobada, continuaremos con el procesamiento de tu pedido.',
                       textAlign: TextAlign.center,
@@ -188,55 +189,12 @@ class _BankAccountInfoUploaderState extends State<BankAccountInfoUploader> {
                           TextStyle(
                               color: Theme.of(context).hintColor,
                               fontSize: 14,
-                              fontWeight: FontWeight.w500))),
-                  // Text.rich(
-                  //   TextSpan(
-                  //     text:
-                  //         'Ahora debes esperar a que se realice la revisión de tu comprobante de pago. Una vez aprobado, tu pedido pasará a ',
-                  //     style: Theme.of(context).textTheme.headline4!.merge(
-                  //           TextStyle(
-                  //             color: Theme.of(context).hintColor,
-                  //             fontSize: 14,
-                  //             fontWeight: FontWeight.w500,
-                  //           ),
-                  //         ),
-                  //     children: const <TextSpan>[
-                  //       TextSpan(
-                  //         text: 'Recibido',
-                  //         style: TextStyle(fontWeight: FontWeight.bold),
-                  //       ),
-                  //       TextSpan(
-                  //         text: ' o ',
-                  //       ),
-                  //       TextSpan(
-                  //         text: 'Confirmado',
-                  //         style: TextStyle(fontWeight: FontWeight.bold),
-                  //       ),
-                  //       TextSpan(
-                  //         text: '.',
-                  //       ),
-                  //     ],
-                  //   ),
-                  //   textAlign: TextAlign.center,
-                  // )
+                              fontWeight: FontWeight.w500))):
+                  Container(),
+
                 ],
               ),
             ),
-            actions: [
-              // MaterialButton(
-              //     shape: RoundedRectangleBorder(
-              //         borderRadius: BorderRadius.circular(10)),
-              //     color: Theme.of(context).colorScheme.secondary,
-              //     minWidth: double.infinity,
-              //     height: 40,
-              //     onPressed: () {
-              //       Navigator.of(context).pop();
-              //     },
-              //     child: Text("OK",
-              //         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              //               fontWeight: FontWeight.w800,
-              //             ))),
-            ],
             actionsPadding:
                 const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           );
