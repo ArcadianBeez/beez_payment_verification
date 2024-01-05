@@ -126,8 +126,8 @@ class _ImageTransferBankPickerState extends State<ImageTransferBankPicker> {
                                 left: 40,
                                 child: Container(
                                   height: MediaQuery.of(context).size.height *
-                                      0.16,
-                                  width: MediaQuery.of(context).size.width * 0.5,
+                                      0.25,
+                                  width: MediaQuery.of(context).size.width * 0.7,
                                   padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(5),
