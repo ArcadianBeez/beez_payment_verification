@@ -114,19 +114,11 @@ class _MyHomePageState extends State<MyHomePage> {
     print(Uri.base);
     // _uuid = Uri.base.queryParameters['uuid'] ??
     //     '38608f6b-c93f-4015-8fc5-9c714760a2f5';
-
-    String? storedUuid = window.localStorage['uuid'];
-    if (storedUuid != null) {
-      _uuid = storedUuid;
+    if(Uri.base.queryParameters['uuid'] != null){
+      _uuid = Uri.base.queryParameters['uuid']!;
+      window.localStorage['uuid'] = _uuid;
     } else {
-      var uriUuid = Uri.base.queryParameters['uuid'];
-      if (uriUuid != null) {
-        _uuid = uriUuid;
-        window.localStorage['uuid'] = uriUuid; // Almacenar el UUID para uso futuro
-      }
-      else {
-        _uuid = ''; // UUID por defecto
-      }
+      _uuid = window.localStorage['uuid'] ?? '';
     }
 
     loadToken();
