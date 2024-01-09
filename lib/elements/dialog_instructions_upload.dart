@@ -185,9 +185,11 @@ class _InstructionsDialogState extends State<InstructionsDialog> {
   Widget imageByBank(String bankName) {
     String imagePath = bankName.contains('Pichincha')
         ? 'assets/img/banks/pichincha.jpeg'
-        : bankName.contains('produbanco')
+        : bankName.contains('Produbanco')
             ? 'assets/img/banks/produbanco.jpeg'
-            : 'assets/img/banks/otrobanco.jpeg';
+            : bankName.contains('UNA')
+                ? 'assets/img/banks/deuna.jpeg'
+                : 'assets/img/banks/otrobanco.jpeg';
 
     return GestureDetector(
       onTap: () => _showExpandedImage(context, imagePath),
