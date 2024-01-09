@@ -45,25 +45,25 @@ class BankAccountDetails extends StatelessWidget {
                   Divider(color: Theme.of(context).hintColor),
                   const SizedBox(height: 5),
                   buildRowInfoBank(context, 'Nombre del banco:',
-                      bankInfo.bankName ?? 'N/A', false),
+                      bankInfo.bankName ?? 'N/A', false, null),
                   const SizedBox(height: 5),
                   buildRowInfoBank(context, 'Número de cuenta:',
-                      bankInfo.accountNumber ?? 'N/A', true),
+                      bankInfo.accountNumber ?? 'N/A', true, null),
                   const SizedBox(height: 5),
                   buildRowInfoBank(context, 'Identificación:',
-                      bankInfo.ciNumber ?? 'N/A', true),
+                      bankInfo.ciNumber ?? 'N/A', true, null),
                   const SizedBox(height: 5),
                   buildRowInfoBank(
-                      context, 'Tipo:', bankInfo.accountType ?? 'N/A', false),
+                      context, 'Tipo:', bankInfo.accountType ?? 'N/A', false, null),
                   const SizedBox(height: 5),
                   buildRowInfoBank(
-                      context, 'Nombre:', bankInfo.ownerName ?? 'N/A', true),
+                      context, 'Nombre:', bankInfo.ownerName ?? 'N/A', true, null),
                   const SizedBox(height: 5),
                   buildRowInfoBank(
-                      context, 'Email:', bankInfo.email ?? 'N/A', true),
+                      context, 'Email:', bankInfo.email ?? 'N/A', true,  bankInfo.email.length>21?13:null),
                   const SizedBox(height: 5),
                   buildRowInfoBank(context, 'Total a pagar:',
-                      '\$${bankInfo.price.toStringAsFixed(2)}', false),
+                      '\$${bankInfo.price.toStringAsFixed(2)}', false,null),
                   Divider(color: Theme.of(context).hintColor),
                 ],
               ),
@@ -83,7 +83,7 @@ class BankAccountDetails extends StatelessWidget {
   }
 
   Row buildRowInfoBank(
-      BuildContext context, String name, String value, bool isCopyable) {
+      BuildContext context, String name, String value, bool isCopyable, double? letterSize) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -104,7 +104,7 @@ class BankAccountDetails extends StatelessWidget {
             Text(
               value,
               style: Theme.of(context).textTheme.headline2!.copyWith(
-                    fontSize: 16,
+                    fontSize: letterSize??16,
                     fontWeight: FontWeight.w400,
                     letterSpacing: 0.4,
                   ),
