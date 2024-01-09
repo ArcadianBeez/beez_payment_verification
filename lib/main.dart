@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:html';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
@@ -111,8 +112,23 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     print(Uri.base);
-    _uuid = Uri.base.queryParameters['uuid'] ??
-        'a4d363e7-8cb4-474c-afac-21e56225c744';
+    // _uuid = Uri.base.queryParameters['uuid'] ??
+    //     '38608f6b-c93f-4015-8fc5-9c714760a2f5';
+
+    String? storedUuid = window.localStorage['uuid'];
+    if (storedUuid != null) {
+      _uuid = storedUuid;
+    } else {
+      var uriUuid = Uri.base.queryParameters['uuid'];
+      if (uriUuid != null) {
+        _uuid = uriUuid;
+        window.localStorage['uuid'] = uriUuid; // Almacenar el UUID para uso futuro
+      }
+      else {
+        _uuid = ''; // UUID por defecto
+      }
+    }
+
     loadToken();
 
     super.initState();
