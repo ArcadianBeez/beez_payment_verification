@@ -191,10 +191,12 @@ class _InstructionsDialogState extends State<InstructionsDialog> {
             : bankName.contains('una')
                 ? 'assets/img/banks/deuna.jpeg'
                 : bankName.contains('internacional')
-                    ? 'assets/img/banks/internacional.jpeg'
+                    ? 'assets/img/banks/internacional.png'
                     : bankName.contains('guayaquil')
-                        ? 'assets/img/banks/guayaquil.jpeg'
-                        : 'assets/img/banks/otrobanco.jpeg';
+                        ? 'assets/img/banks/guayaquil.png'
+                        : bankName.contains('pacifico')
+                            ? 'assets/img/banks/pacifico.png'
+                            : 'assets/img/banks/otrobanco.jpeg';
 
     return GestureDetector(
       onTap: () => _showExpandedImage(context, imagePath),
