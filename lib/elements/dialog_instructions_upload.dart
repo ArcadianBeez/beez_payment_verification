@@ -183,13 +183,18 @@ class _InstructionsDialogState extends State<InstructionsDialog> {
   }
 
   Widget imageByBank(String bankName) {
-    String imagePath = bankName.contains('Pichincha')
+    bankName = bankName.toLowerCase();
+    String imagePath = bankName.contains('pichincha')
         ? 'assets/img/banks/pichincha.jpeg'
-        : bankName.contains('Produbanco')
+        : bankName.contains('produbanco')
             ? 'assets/img/banks/produbanco.jpeg'
-            : bankName.contains('UNA')
+            : bankName.contains('una')
                 ? 'assets/img/banks/deuna.jpeg'
-                : 'assets/img/banks/otrobanco.jpeg';
+                : bankName.contains('internacional')
+                    ? 'assets/img/banks/internacional.jpeg'
+                    : bankName.contains('guayaquil')
+                        ? 'assets/img/banks/guayaquil.jpeg'
+                        : 'assets/img/banks/otrobanco.jpeg';
 
     return GestureDetector(
       onTap: () => _showExpandedImage(context, imagePath),

@@ -6,10 +6,12 @@ import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:payment_verification_app/pages/bank_account_info_uploader.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'config/app_config.dart' as config;
 import 'firebase_options.dart';
 import 'generated/i18n.dart';
 import 'package:http/http.dart' as http;
+import 'models/city.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -108,20 +110,23 @@ class _MyHomePageState extends State<MyHomePage> {
   String _uuid = '';
   bool isLoaded = true;
   bool isInvalid = false;
+  List<City> cities = [];
 
   @override
   void initState() {
     print(Uri.base);
     // _uuid = Uri.base.queryParameters['uuid'] ??
-    //     '38608f6b-c93f-4015-8fc5-9c714760a2f5';
-    if(Uri.base.queryParameters['uuid'] != null){
+    //     '173ecc74-b28b-43e4-a5d9-1394f98bc2af';
+    if (Uri.base.queryParameters['uuid'] != null) {
       _uuid = Uri.base.queryParameters['uuid']!;
       window.localStorage['uuid'] = _uuid;
     } else {
-      _uuid = window.localStorage['uuid'] ?? '';
+      _uuid = window.localStorage['uuid'] ?? 'j';
     }
 
     loadToken();
+
+    loadCities();
 
     super.initState();
   }
@@ -136,23 +141,89 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  loadCities() async {
+    cities = await getCities();
+  }
+
   @override
   Widget build(BuildContext context) {
     if (!isLoaded && !isInvalid) {
       return BankAccountInfoUploader(jwt: _token);
     } else if (isInvalid) {
       return Scaffold(
-        backgroundColor: Colors.white,
-        body:
-          Center(
+          backgroundColor: Colors.white,
+          body: Center(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                   Text(_token),
-                  const Text('Por favor, contacte al administrador')
-                ],
-              ))
-      );
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(_token,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(fontSize: 15)),
+              const SizedBox(height: 10),
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).hintColor,
+                ),
+                child: MaterialButton(
+                    //color: Colors.grey,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/img/help.png',
+                          width: 50,
+                          height: 50,
+                        ),
+                        Text('Por favor, contacte al administrador',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(color: Colors.white)),
+                      ],
+                    ),
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Seleccione su ciudad',
+                                  style: TextStyle(color: Colors.black)),
+                              content: SizedBox(
+                                width: 300,
+                                height: 300,
+                                child: ListView.builder(
+                                  itemCount: cities.length,
+                                  itemBuilder: (context, index) {
+                                    return ListTile(
+                                      title: Text(cities[index].name.toString(),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium!
+                                              .copyWith(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w600)),
+                                      onTap: () {
+                                        String number =
+                                            cities[index].supportNumber!;
+                                        number = number[0] == '0'
+                                            ? '+593${number.substring(1)}'
+                                            : number;
+                                        String whatsappUrl =
+                                            "https://wa.me/$number";
+                                        launch(whatsappUrl);
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                            );
+                          });
+                    }),
+              ),
+            ],
+          )));
     } else {
       return const Scaffold(
         backgroundColor: Colors.white,
@@ -178,5 +249,19 @@ class _MyHomePageState extends State<MyHomePage> {
       return request['message'];
     }
     return request['token'];
+  }
+
+  Future<List<City>> getCities() async {
+    List<City> cities = [];
+    const String apiToken =
+        '?api_token=wvSij4xlWvsPR37f96TWYO5o64GfwsYWKwAyAsyXVqBz2AmaYwpxeMDjRFY1&';
+    final String url =
+        '${GlobalConfiguration().getValue('api_base_url')}cities${apiToken}';
+    final response = await http.get(Uri.parse(url));
+    var citiesResponse = jsonDecode(response.body)['data'];
+    citiesResponse.forEach((_city) {
+      cities.add(City.fromJson(_city));
+    });
+    return cities;
   }
 }
