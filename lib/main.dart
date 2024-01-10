@@ -176,11 +176,29 @@ class _MyHomePageState extends State<MyHomePage> {
                           width: 50,
                           height: 50,
                         ),
-                        Text('Por favor, contacte al administrador',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(color: Colors.white)),
+                        // Text('Por favor, contacte al administrador',
+                        //     style: Theme.of(context)
+                        //         .textTheme
+                        //         .bodyMedium!
+                        //         .copyWith(color: Colors.white)),
+
+                 Column(
+                   children: [
+                     Text(
+                         "¿Necesitas ayuda?",
+                         style: Theme.of(context)
+                             .textTheme
+                             .bodyMedium!
+                             .copyWith(color: Colors.white)
+                     ),
+                     Text(
+                         "Contáctanos",
+                         style: Theme.of(context)
+                             .textTheme
+                             .bodyMedium!
+                             .copyWith(color: Colors.white)),
+                   ],
+                 )
                       ],
                     ),
                     onPressed: () {
@@ -188,6 +206,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
+                              backgroundColor: Colors.white,
                               title: const Text('Seleccione su ciudad',
                                   style: TextStyle(color: Colors.black)),
                               content: SizedBox(
