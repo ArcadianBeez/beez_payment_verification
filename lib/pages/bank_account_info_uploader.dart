@@ -28,6 +28,7 @@ class _BankAccountInfoUploaderState extends State<BankAccountInfoUploader> {
   bool isReady = false;
   XFile? pickedFile;
   bool loading = false;
+  String? bankName;
 
   @override
   void initState() {
@@ -63,9 +64,11 @@ class _BankAccountInfoUploaderState extends State<BankAccountInfoUploader> {
                       ImageTransferBankPicker(
                         token: widget.jwt,
                         bankName: bankTransferInfo!.bankName ?? 'N/A',
-                        onFilePicked: (pickedFile) {
+                        onFilePicked: (pickedFile, bankName) {
                           setState(() {
                             this.pickedFile = pickedFile;
+                            this.bankName = bankName;
+
                           });
                         },
                       ),
@@ -83,7 +86,7 @@ class _BankAccountInfoUploaderState extends State<BankAccountInfoUploader> {
                               });
                             }
                             var response =
-                                await uploadImagePlan(widget.jwt, pickedFile!);
+                                await uploadImagePlan(widget.jwt, pickedFile!, bankName!);
 
                             if (mounted) {
                               setState(() {
@@ -201,7 +204,7 @@ class _BankAccountInfoUploaderState extends State<BankAccountInfoUploader> {
         });
   }
 
-  Future<String> uploadImagePlan(String token, XFile? image) async {
+  Future<String> uploadImagePlan(String token, XFile? image, String bankName) async {
     var Sizes = getScreenSize();
     final String url =
         '${GlobalConfiguration().getValue('api_base_url')}validate_image_metadata';
@@ -243,6 +246,7 @@ class _BankAccountInfoUploaderState extends State<BankAccountInfoUploader> {
           "screenHeight": screenHeight,
           "imageWidth": imageWidth,
           "imageHeight": imageHeight,
+          'bankName': bankName,
         })
       };
       request.fields.addAll(fileDetails);

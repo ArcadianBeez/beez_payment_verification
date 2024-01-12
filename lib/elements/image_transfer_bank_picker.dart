@@ -6,16 +6,17 @@ import 'package:image_picker/image_picker.dart';
 import 'dialog_instructions_upload.dart';
 
 class ImageTransferBankPicker extends StatefulWidget {
-  final String bankName;
+  String bankName;
   final String token;
 
-  final Function(XFile) onFilePicked;
+  final Function(XFile, dynamic) onFilePicked;
 
-  const ImageTransferBankPicker(
+  ImageTransferBankPicker(
       {Key? key,
       required this.bankName,
       required this.token,
-      required this.onFilePicked})
+      required this.onFilePicked
+     })
       : super(key: key);
 
   @override
@@ -125,9 +126,10 @@ class _ImageTransferBankPickerState extends State<ImageTransferBankPicker> {
                                 top: 2,
                                 left: 40,
                                 child: Container(
-                                  height: MediaQuery.of(context).size.height *
-                                      0.2,
-                                  width: MediaQuery.of(context).size.width * 0.7,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.2,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.7,
                                   padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(5),
@@ -145,7 +147,7 @@ class _ImageTransferBankPickerState extends State<ImageTransferBankPicker> {
                                                   fontSize: 13,
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.white)),
-                                     const SizedBox(height: 10),
+                                      const SizedBox(height: 10),
                                       Text('VER TUTORIAL',
                                           style: Theme.of(context)
                                               .textTheme
@@ -171,14 +173,80 @@ class _ImageTransferBankPickerState extends State<ImageTransferBankPicker> {
   }
 
   _showDialogWithInstructions() async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return InstructionsDialog(
-            getFromGalleryCallback: _getFromGallery, bankName: widget.bankName);
-      },
-    );
+    if (widget.bankName.toLowerCase().contains('produbanco')) {
+      return showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+                title: const Text(
+                    'Seleccione el banco al que pertenece su cuenta',
+                    style: TextStyle(color: Colors.black)),
+                content: SizedBox(
+                  width: 300,
+                  height: 150,
+                  child: Column(
+                    children: [
+                      ListTile(
+                        title: Text('BeProdubanco',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                    fontSize: 15, fontWeight: FontWeight.w600)),
+                        onTap: () {
+                          setState(() {
+                            widget.bankName = 'BeProdubanco';
+                          });
+                          Navigator.pop(context);
+                          showDialog<void>(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext context) {
+                              return InstructionsDialog(
+                                  getFromGalleryCallback: _getFromGallery,
+                                  bankName: widget.bankName);
+                            },
+                          );
+                        },
+                      ),
+                      ListTile(
+                        title: Text('Produbanco',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                    fontSize: 15, fontWeight: FontWeight.w600)),
+                        onTap: () {
+                          setState(() {
+                            widget.bankName = 'Produbanco';
+                          });
+                          Navigator.pop(context);
+                          showDialog<void>(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext context) {
+                              return InstructionsDialog(
+                                  getFromGalleryCallback: _getFromGallery,
+                                  bankName: widget.bankName);
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ));
+          });
+    } else {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return InstructionsDialog(
+              getFromGalleryCallback: _getFromGallery,
+              bankName: widget.bankName);
+        },
+      );
+    }
   }
 
   _getFromGallery() async {
@@ -188,7 +256,7 @@ class _ImageTransferBankPickerState extends State<ImageTransferBankPicker> {
       image = pickedFile;
       imageBytes = await image!.readAsBytes();
       setState(() {});
-      widget.onFilePicked(pickedFile!);
+      widget.onFilePicked(pickedFile!, widget.bankName);
     } else {
       print('No image selected.');
     }

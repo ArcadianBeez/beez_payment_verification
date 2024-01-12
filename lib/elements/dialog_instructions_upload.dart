@@ -134,7 +134,7 @@ class _InstructionsDialogState extends State<InstructionsDialog> {
                       Divider(color: Theme.of(context).hintColor),
                     ])),
             const SizedBox(height: 10),
-            Text('El comprobante de pago se debe ver como, (ejemplo):',
+            Text('Ejemplo:',
                 style: Theme.of(context)
                     .textTheme
                     .bodyText1!
@@ -186,17 +186,19 @@ class _InstructionsDialogState extends State<InstructionsDialog> {
     bankName = bankName.toLowerCase();
     String imagePath = bankName.contains('pichincha')
         ? 'assets/img/banks/pichincha.jpeg'
-        : bankName.contains('produbanco')
-            ? 'assets/img/banks/produbanco.jpeg'
-            : bankName.contains('una')
-                ? 'assets/img/banks/deuna.jpeg'
-                : bankName.contains('internacional')
-                    ? 'assets/img/banks/internacional.png'
-                    : bankName.contains('guayaquil')
-                        ? 'assets/img/banks/guayaquil.png'
-                        : bankName.contains('pacifico')
-                            ? 'assets/img/banks/pacifico.png'
-                            : 'assets/img/banks/otrobanco.jpeg';
+        : bankName.contains('beprodubanco')
+            ? 'assets/img/banks/beprodubanco.png'
+            : bankName.contains('produbanco')
+                ? 'assets/img/banks/produbanco.jpeg'
+                : bankName.contains('una')
+                    ? 'assets/img/banks/deuna.jpeg'
+                    : bankName.contains('internacional')
+                        ? 'assets/img/banks/internacional.png'
+                        : bankName.contains('guayaquil')
+                            ? 'assets/img/banks/guayaquil.png'
+                            : bankName.contains('pacifico')
+                                ? 'assets/img/banks/pacifico.png'
+                                : 'assets/img/banks/otrobanco.jpeg';
 
     return GestureDetector(
       onTap: () => _showExpandedImage(context, imagePath),
