@@ -4,6 +4,7 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:payment_verification_app/pages/success_page.dart';
 import '../elements/bank_account_details.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import '../elements/image_transfer_bank_picker.dart';
@@ -92,7 +93,10 @@ class _BankAccountInfoUploaderState extends State<BankAccountInfoUploader> {
                               setState(() {
                                 loading = false;
                               });
-                              buildShowDialogResponse(context, response);
+                              // buildShowDialogResponse(context, response);
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(builder: (context) => SuccessPage(response: response)),
+                              );
                             }
                           },
                           child: SizedBox(
@@ -149,8 +153,8 @@ class _BankAccountInfoUploaderState extends State<BankAccountInfoUploader> {
           return AlertDialog(
             backgroundColor: Colors.white,
             content: SizedBox(
-              width: 150,
-              height: 300,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
               child: Column(
                 children: [
                   const SizedBox(height: 10),
