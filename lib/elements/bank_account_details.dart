@@ -53,17 +53,21 @@ class BankAccountDetails extends StatelessWidget {
                   buildRowInfoBank(context, 'Identificación:',
                       bankInfo.ciNumber ?? 'N/A', true, null),
                   const SizedBox(height: 5),
-                  buildRowInfoBank(
-                      context, 'Tipo:', bankInfo.accountType ?? 'N/A', false, null),
+                  buildRowInfoBank(context, 'Tipo:',
+                      bankInfo.accountType ?? 'N/A', false, null),
                   const SizedBox(height: 5),
                   buildRowInfoBank(
-                      context, 'Nombre:', bankInfo.ownerName ?? 'N/A', true, null),
-                  const SizedBox(height: 5),
-                  buildRowInfoBank(
-                      context, 'Email:', bankInfo.email ?? 'N/A', true,  bankInfo.email.length>21?13:null),
+                      context,
+                      'Nombre:',
+                      bankInfo.ownerName ?? 'N/A',
+                      true,
+                      bankInfo.email.length > 15 ? 14 : null),
+                  const SizedBox(height: 10),
+                  buildRowInfoBank(context, 'Email:', bankInfo.email ?? 'N/A',
+                      true, bankInfo.email.length > 15 ? 14 : null),
                   const SizedBox(height: 5),
                   buildRowInfoBank(context, 'Total a pagar:',
-                      '\$${bankInfo.price.toStringAsFixed(2)}', false,null),
+                      '\$${bankInfo.price.toStringAsFixed(2)}', false, null),
                   Divider(color: Theme.of(context).hintColor),
                 ],
               ),
@@ -82,14 +86,14 @@ class BankAccountDetails extends StatelessWidget {
     );
   }
 
-  Row buildRowInfoBank(
-      BuildContext context, String name, String value, bool isCopyable, double? letterSize) {
+  Row buildRowInfoBank(BuildContext context, String name, String value,
+      bool isCopyable, double? letterSize) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
           alignment: Alignment.topLeft,
-          width: 120,
+          width: 100,
           child: Text(
             name,
             style: Theme.of(context).textTheme.headline2!.copyWith(
@@ -98,20 +102,20 @@ class BankAccountDetails extends StatelessWidget {
                 ),
           ),
         ),
-        const SizedBox(width: 10),
+        const SizedBox(width: 5),
         Row(
           children: [
             Text(
               value,
               style: Theme.of(context).textTheme.headline2!.copyWith(
-                    fontSize: letterSize??16,
+                    fontSize: letterSize ?? 16,
                     fontWeight: FontWeight.w400,
                     letterSpacing: 0.4,
                   ),
             ),
-            const SizedBox(width: 5),
+            const SizedBox(width: 10),
             isCopyable
-                ? GestureDetector(
+                ? InkWell(
                     onTap: () {
                       Clipboard.setData(ClipboardData(text: value));
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -122,7 +126,7 @@ class BankAccountDetails extends StatelessWidget {
                       );
                     },
                     child: Icon(Icons.copy,
-                        size: 15, color: Theme.of(context).hintColor),
+                        size: 20, color: Theme.of(context).hintColor),
                   )
                 : const SizedBox(),
           ],

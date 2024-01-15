@@ -30,6 +30,7 @@ class _BankAccountInfoUploaderState extends State<BankAccountInfoUploader> {
   XFile? pickedFile;
   bool loading = false;
   String? bankName;
+  bool _isChecked = false;
 
   @override
   void initState() {
@@ -74,6 +75,37 @@ class _BankAccountInfoUploaderState extends State<BankAccountInfoUploader> {
                         },
                       ),
                       const SizedBox(height: 20),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 10),
+                        width: MediaQuery.of(context).size.width*0.9,
+                        child: Row(
+                          children: [
+                            Checkbox(
+                              focusColor: Theme.of(context).colorScheme.secondary,
+                              value: _isChecked,
+                              onChanged: (bool? newValue) {
+                                setState(() {
+                                  _isChecked = newValue!;
+                                });
+                              },
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width*0.8,
+                              child: Text(
+                                'Confirmo que los datos proporcionados en el certificado de pago son exactos y fidedignos.',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(
+                                        color: Theme.of(context).hintColor,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 14),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 15),
                       MaterialButton(
                           minWidth: 200,
                           height: 50,
@@ -81,22 +113,45 @@ class _BankAccountInfoUploaderState extends State<BankAccountInfoUploader> {
                               borderRadius: BorderRadius.circular(10)),
                           color: Theme.of(context).colorScheme.secondary,
                           onPressed: () async {
-                            if (mounted) {
-                              setState(() {
-                                loading = true;
-                              });
-                            }
-                            var response =
-                                await uploadImagePlan(widget.jwt, pickedFile!, bankName!);
-
-                            if (mounted) {
-                              setState(() {
-                                loading = false;
-                              });
-                              // buildShowDialogResponse(context, response);
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(builder: (context) => SuccessPage(response: response)),
+                            if(pickedFile==null){
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Debes seleccionar una imagen'),
+                                  duration: Duration(seconds: 3),
+                                ),
                               );
+                              return;
+                            }else{
+                              if(!_isChecked){
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Debes confirmar que los datos son correctos.'),
+                                    duration: Duration(seconds: 3),
+                                  ),
+                                );
+                                return;
+                              }
+
+                              if (mounted) {
+                                setState(() {
+                                  loading = true;
+                                });
+                              }
+                              var response =
+                              await uploadImagePlan(widget.jwt, pickedFile!, bankName!);
+
+                              if (mounted) {
+                                setState(() {
+                                  loading = false;
+                                });
+    }
+
+
+                              // buildShowDialogResponse(context, response);
+
+
+
+
                             }
                           },
                           child: SizedBox(

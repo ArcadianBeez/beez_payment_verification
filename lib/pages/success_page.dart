@@ -9,9 +9,7 @@ class SuccessPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Pantalla de Éxito'),
-      // ),
+      backgroundColor: Colors.white,
       body: Center(
         child:
         Column(
@@ -49,14 +47,17 @@ class SuccessPage extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             response == 'Comprobante cargado con éxito'?
-            Text(
-                'Pronto revisaremos tu transacción; este proceso suele tardar aproximadamente un minuto. Una vez que la transacción sea aprobada, continuaremos con el procesamiento de tu pedido.',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headline4!.merge(
-                    TextStyle(
-                        color: Theme.of(context).hintColor,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500))):
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.65,
+              child: Text(
+                  'Pronto revisaremos tu transacción; este proceso suele tardar aproximadamente un minuto. Una vez que la transacción sea aprobada, continuaremos con el procesamiento de tu pedido.',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headline4!.merge(
+                      TextStyle(
+                          color: Theme.of(context).hintColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500))),
+            ):
             Container(),
 
           ],
