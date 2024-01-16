@@ -143,6 +143,10 @@ class _BankAccountInfoUploaderState extends State<BankAccountInfoUploader> {
                                   setState(() {
                                     loading = false;
                                   });
+
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(builder: (context) => SuccessPage(response: response)),
+                                  );
                               }
 
 
