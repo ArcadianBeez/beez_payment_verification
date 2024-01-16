@@ -130,20 +130,22 @@ class _BankAccountInfoUploaderState extends State<BankAccountInfoUploader> {
                                   ),
                                 );
                                 return;
+                              }else{
+                                if (mounted) {
+                                  setState(() {
+                                    loading = true;
+                                  });
+                                }
+                                var response =
+                                await uploadImagePlan(widget.jwt, pickedFile!, bankName!);
+
+                                if (mounted) {
+                                  setState(() {
+                                    loading = false;
+                                  });
                               }
 
-                              if (mounted) {
-                                setState(() {
-                                  loading = true;
-                                });
-                              }
-                              var response =
-                              await uploadImagePlan(widget.jwt, pickedFile!, bankName!);
 
-                              if (mounted) {
-                                setState(() {
-                                  loading = false;
-                                });
     }
 
 
