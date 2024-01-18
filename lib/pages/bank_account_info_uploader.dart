@@ -251,7 +251,7 @@ class _BankAccountInfoUploaderState extends State<BankAccountInfoUploader> {
                   const SizedBox(height: 10),
                   response == 'Comprobante cargado con éxito'?
                   Text(
-                      'Pronto revisaremos tu transacción; este proceso suele tardar aproximadamente un minuto. Una vez que la transacción sea aprobada, continuaremos con el procesamiento de tu pedido.',
+                      'Pronto revisaremos tu transacción; este proceso suele tardar aproximadamente tres minutos. Una vez que la transacción sea aprobada, continuaremos con el procesamiento de tu pedido.',
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.headline4!.merge(
                           TextStyle(
