@@ -158,7 +158,7 @@ class _InstructionsDialogState extends State<InstructionsDialog> {
                           _controller.initialize().then((_) => setState(() {}));
                           _controller.play();
                           showDialog(
-                            barrierDismissible: false,
+                            barrierDismissible: true,
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
