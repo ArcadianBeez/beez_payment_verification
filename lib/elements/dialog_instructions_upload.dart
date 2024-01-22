@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 
 class InstructionsDialog extends StatefulWidget {
   final VoidCallback getFromGalleryCallback;
@@ -16,6 +17,25 @@ class _InstructionsDialogState extends State<InstructionsDialog> {
   double _width = 500;
   double _height = 500;
   bool _isExpanded = false;
+  late VideoPlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.asset('assets/img/video.mp4');
+
+    _controller.addListener(() {
+      setState(() {});
+    });
+    _controller.setLooping(true);
+    _controller.initialize().then((_) => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   void _toggleExpansion() {
     setState(() {
@@ -129,7 +149,75 @@ class _InstructionsDialogState extends State<InstructionsDialog> {
                                       .textTheme
                                       .bodyText1!
                                       .copyWith(fontSize: 14))),
+
                         ],
+                      ),
+                      SizedBox(height: 5),
+                      GestureDetector(
+                        onTap: () {
+                          _controller.play();
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                content: Container(
+                                  height: 500,
+                                  width: 300,
+                                  child: AspectRatio(
+                                    aspectRatio:
+                                    _controller.value.aspectRatio,
+                                    child: Stack(
+                                      alignment: Alignment.bottomCenter,
+                                      children: <Widget>[
+                                        VideoPlayer(_controller),
+                                        VideoProgressIndicator(
+                                          _controller,
+                                          allowScrubbing: true,
+                                        ),
+                                        Padding(
+                                          padding:
+                                          const EdgeInsets.all(8.0),
+                                          child: IconButton(
+                                            icon: Icon(
+                                              _controller.value.isPlaying
+                                                  ? Icons.pause
+                                                  : Icons.play_arrow,
+                                              color: Colors.white,
+                                              size: 20.0,
+                                            ),
+                                            onPressed: () {
+                                              setState(() {
+                                                if (_controller
+                                                    .value.isPlaying) {
+                                                  _controller.pause();
+                                                } else {
+                                                  _controller.play();
+                                                }
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          margin: const EdgeInsets.only(left: 5, top: 0),
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          child: Text(
+                            'Aquí un video tutorial',
+
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .copyWith(fontSize: 14, color: Colors.blue, decoration: TextDecoration.underline),
+                          ),
+                        ),
                       ),
                       Divider(color: Theme.of(context).hintColor),
                     ])),
