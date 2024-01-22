@@ -163,7 +163,7 @@ class _InstructionsDialogState extends State<InstructionsDialog> {
                             builder: (BuildContext context) {
                               return AlertDialog(
 
-                                backgroundColor: Color.fromRGBO(253, 203, 0, 1),
+                                backgroundColor: const Color.fromRGBO(253, 203, 0, 1),
                                 content: SizedBox(
                                   height: 550,
                                   width: 320,
