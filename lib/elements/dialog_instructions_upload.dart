@@ -160,9 +160,10 @@ class _InstructionsDialogState extends State<InstructionsDialog> {
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                content: Container(
+                                backgroundColor: Theme.of(context).colorScheme.secondary,
+                                content: SizedBox(
                                   height: 500,
-                                  width: 300,
+                                  width: 00,
                                   child: AspectRatio(
                                     aspectRatio:
                                     _controller.value.aspectRatio,
@@ -210,7 +211,7 @@ class _InstructionsDialogState extends State<InstructionsDialog> {
                           margin: const EdgeInsets.only(left: 5, top: 0),
                           width: MediaQuery.of(context).size.width * 0.7,
                           child: Text(
-                            'Aquí un video tutorial',
+                            'Aquí un video tutorial 📹',
 
                             style: Theme.of(context)
                                 .textTheme
