@@ -69,171 +69,174 @@ class _InstructionsDialogState extends State<InstructionsDialog> {
               Navigator.of(context).pop();
             },
           )),
-      content: SingleChildScrollView(
-        child: ListBody(
-          children: <Widget>[
-            Text(
-              'Instrucciones al subir su comprobante',
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  fontSize: 16, fontWeight: FontWeight.w800, letterSpacing: 1),
-              textAlign: TextAlign.center,
-            ),
-            Divider(color: Theme.of(context).hintColor),
-            const SizedBox(height: 10),
-            Container(
-                width: MediaQuery.of(context).size.width * 0.7,
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(Icons.check,
-                              size: 15, color: Theme.of(context).hintColor),
-                          Container(
-                            margin: EdgeInsets.only(left: 5, top: 0),
-                            width: MediaQuery.of(context).size.width * 0.7,
-                            child: Text(
-                                'La imagen debe ser una captura de pantalla del comprobante de transferencia que incluya la hora visible.',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .copyWith(fontSize: 14)),
-                          ),
-                        ],
-                      ),
-                      Divider(color: Theme.of(context).hintColor),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(Icons.check,
-                              size: 15, color: Theme.of(context).hintColor),
-                          SizedBox(width: 5),
-                          Container(
-                            height: 10,
-                            width: 10,
-                            decoration: const BoxDecoration(
-                              color: Colors.red,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                          SizedBox(width: 5),
-                          Container(
-                            margin: EdgeInsets.only(top: 0),
-                            width: MediaQuery.of(context).size.width * 0.7,
-                            child: Text(
-                                'Todos los detalles importantes, marcados con puntos rojos, deben estar claramente visibles.',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .copyWith(fontSize: 14)),
-                          ),
-                        ],
-                      ),
-                      Divider(color: Theme.of(context).hintColor),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(Icons.check,
-                              size: 15, color: Theme.of(context).hintColor),
-                          Container(
-                              margin: const EdgeInsets.only(left: 5, top: 0),
+      content: Container(
+        height: 1000,
+        child: SingleChildScrollView(
+controller: ScrollController(),
+          child: ListBody(
+            children: <Widget>[
+              Text(
+                'Instrucciones al subir su comprobante',
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    fontSize: 16, fontWeight: FontWeight.w800, letterSpacing: 1),
+                textAlign: TextAlign.center,
+              ),
+              Divider(color: Theme.of(context).hintColor),
+              const SizedBox(height: 10),
+              Container(
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(Icons.check,
+                                size: 15, color: Theme.of(context).hintColor),
+                            Container(
+                              margin: EdgeInsets.only(left: 5, top: 0),
                               width: MediaQuery.of(context).size.width * 0.7,
                               child: Text(
-                                  'Al final te dejamos el ejemplo proporcionado para ver cómo debe lucir tu comprobante de pago.',
+                                  'La imagen debe ser una captura de pantalla del comprobante de transferencia que incluya la hora visible.',
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyText1!
-                                      .copyWith(fontSize: 14))),
-
-                        ],
-                      ),
-                      SizedBox(height: 5),
-                      GestureDetector(
-                        onTap: () {
-                          _controller.addListener(() {
-                            setState(() {});
-                          });
-                          _controller.setLooping(true);
-                          _controller.initialize().then((_) => setState(() {}));
-                          _controller.play();
-                          showDialog(
-                            barrierDismissible: true,
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-
-                                backgroundColor: const Color.fromRGBO(253, 203, 0, 1),
-                                content: SizedBox(
-                                  height: 550,
-                                  width: 320,
-                                  child: AspectRatio(
-                                    aspectRatio:
-                                    _controller.value.aspectRatio,
-                                    child: Stack(
-                                      alignment: Alignment.bottomCenter,
-                                      children: <Widget>[
-                                        VideoPlayer(_controller),
-                                        VideoProgressIndicator(
-                                          _controller,
-                                          allowScrubbing: true,
-                                        ),
-                                        Padding(
-                                          padding:
-                                          const EdgeInsets.all(8.0),
-                                          child: IconButton(
-                                            icon: Icon(
-                                              _controller.value.isPlaying
-                                                  ? Icons.pause
-                                                  : Icons.play_arrow,
-                                              color: Colors.white,
-                                              size: 20.0,
-                                            ),
-                                            onPressed: () {
-                                              setState(() {
-                                                if (_controller
-                                                    .value.isPlaying) {
-                                                  _controller.pause();
-                                                } else {
-                                                  _controller.play();
-                                                }
-                                              });
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          margin: const EdgeInsets.only(left: 5, top: 0),
-                          width: MediaQuery.of(context).size.width * 0.7,
-                          child: Text(
-                            'Aquí un video tutorial 📹',
-
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1!
-                                .copyWith(fontSize: 14, color: Colors.blue, decoration: TextDecoration.underline),
-                          ),
+                                      .copyWith(fontSize: 14)),
+                            ),
+                          ],
                         ),
-                      ),
-                      Divider(color: Theme.of(context).hintColor),
-                    ])),
-            const SizedBox(height: 10),
-            Text('Ejemplo:',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText1!
-                    .copyWith(fontSize: 14)),
-            const SizedBox(height: 5),
-            imageByBank(widget.bankName)
-          ],
+                        Divider(color: Theme.of(context).hintColor),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(Icons.check,
+                                size: 15, color: Theme.of(context).hintColor),
+                            SizedBox(width: 5),
+                            Container(
+                              height: 10,
+                              width: 10,
+                              decoration: const BoxDecoration(
+                                color: Colors.red,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            Container(
+                              margin: EdgeInsets.only(top: 0),
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              child: Text(
+                                  'Todos los detalles importantes, marcados con puntos rojos, deben estar claramente visibles.',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1!
+                                      .copyWith(fontSize: 14)),
+                            ),
+                          ],
+                        ),
+                        Divider(color: Theme.of(context).hintColor),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(Icons.check,
+                                size: 15, color: Theme.of(context).hintColor),
+                            Container(
+                                margin: const EdgeInsets.only(left: 5, top: 0),
+                                width: MediaQuery.of(context).size.width * 0.7,
+                                child: Text(
+                                    'Al final te dejamos el ejemplo proporcionado para ver cómo debe lucir tu comprobante de pago.',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1!
+                                        .copyWith(fontSize: 14))),
+
+                          ],
+                        ),
+                        // const SizedBox(height: 5),
+                        // GestureDetector(
+                        //   onTap: () {
+                        //     _controller.addListener(() {
+                        //       setState(() {});
+                        //     });
+                        //     _controller.setLooping(true);
+                        //     _controller.initialize().then((_) => setState(() {}));
+                        //     _controller.play();
+                        //     showDialog(
+                        //       barrierDismissible: true,
+                        //       context: context,
+                        //       builder: (BuildContext context) {
+                        //         return AlertDialog(
+                        //           backgroundColor: const Color.fromRGBO(253, 203, 0, 1),
+                        //           content: SizedBox(
+                        //             height: 550,
+                        //             width: 320,
+                        //             child: AspectRatio(
+                        //               aspectRatio:
+                        //               _controller.value.aspectRatio,
+                        //               child: Stack(
+                        //                 alignment: Alignment.bottomCenter,
+                        //                 children: <Widget>[
+                        //                   VideoPlayer(_controller),
+                        //                   VideoProgressIndicator(
+                        //                     _controller,
+                        //                     allowScrubbing: true,
+                        //                   ),
+                        //                   Padding(
+                        //                     padding:
+                        //                     const EdgeInsets.all(8.0),
+                        //                     child: IconButton(
+                        //                       icon: Icon(
+                        //                         _controller.value.isPlaying
+                        //                             ? Icons.pause
+                        //                             : Icons.play_arrow,
+                        //                         color: Colors.white,
+                        //                         size: 20.0,
+                        //                       ),
+                        //                       onPressed: () {
+                        //                         setState(() {
+                        //                           if (_controller
+                        //                               .value.isPlaying) {
+                        //                             _controller.pause();
+                        //                           } else {
+                        //                             _controller.play();
+                        //                           }
+                        //                         });
+                        //                       },
+                        //                     ),
+                        //                   ),
+                        //                 ],
+                        //               ),
+                        //             ),
+                        //           ),
+                        //         );
+                        //       },
+                        //     );
+                        //   },
+                        //   child: Container(
+                        //     alignment: Alignment.center,
+                        //     margin: const EdgeInsets.only(left: 5, top: 0),
+                        //     width: MediaQuery.of(context).size.width * 0.7,
+                        //     child: Text(
+                        //       'Aquí un video tutorial 📹',
+                        //
+                        //       style: Theme.of(context)
+                        //           .textTheme
+                        //           .bodyText1!
+                        //           .copyWith(fontSize: 14, color: Colors.blue, decoration: TextDecoration.underline),
+                        //     ),
+                        //   ),
+                        // ),
+                        Divider(color: Theme.of(context).hintColor),
+                      ])),
+              const SizedBox(height: 10),
+              Text('Ejemplo:',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1!
+                      .copyWith(fontSize: 14)),
+              const SizedBox(height: 5),
+              imageByBank(widget.bankName)
+            ],
+          ),
         ),
       ),
       actions: <Widget>[
