@@ -24,11 +24,7 @@ class _InstructionsDialogState extends State<InstructionsDialog> {
     super.initState();
     _controller = VideoPlayerController.asset('assets/img/video.mp4');
 
-    _controller.addListener(() {
-      setState(() {});
-    });
-    _controller.setLooping(true);
-    _controller.initialize().then((_) => setState(() {}));
+
   }
 
   @override
@@ -155,6 +151,11 @@ class _InstructionsDialogState extends State<InstructionsDialog> {
                       SizedBox(height: 5),
                       GestureDetector(
                         onTap: () {
+                          _controller.addListener(() {
+                            setState(() {});
+                          });
+                          _controller.setLooping(true);
+                          _controller.initialize().then((_) => setState(() {}));
                           _controller.play();
                           showDialog(
                             context: context,
