@@ -158,13 +158,15 @@ class _InstructionsDialogState extends State<InstructionsDialog> {
                           _controller.initialize().then((_) => setState(() {}));
                           _controller.play();
                           showDialog(
+                            barrierDismissible: false,
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                backgroundColor: Theme.of(context).colorScheme.secondary,
+
+                                backgroundColor: Color.fromRGBO(253, 203, 0, 1),
                                 content: SizedBox(
-                                  height: 500,
-                                  width: 00,
+                                  height: 550,
+                                  width: 320,
                                   child: AspectRatio(
                                     aspectRatio:
                                     _controller.value.aspectRatio,
