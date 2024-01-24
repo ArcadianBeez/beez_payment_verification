@@ -105,34 +105,34 @@ controller: ScrollController(),
                             ),
                           ],
                         ),
-                        Divider(color: Theme.of(context).hintColor),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Icon(Icons.check,
-                                size: 15, color: Theme.of(context).hintColor),
-                            SizedBox(width: 5),
-                            Container(
-                              height: 10,
-                              width: 10,
-                              decoration: const BoxDecoration(
-                                color: Colors.red,
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                            SizedBox(width: 5),
-                            Container(
-                              margin: EdgeInsets.only(top: 0),
-                              width: MediaQuery.of(context).size.width * 0.7,
-                              child: Text(
-                                  'Todos los detalles importantes, marcados con puntos rojos, deben estar claramente visibles.',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyText1!
-                                      .copyWith(fontSize: 14)),
-                            ),
-                          ],
-                        ),
+                        // Divider(color: Theme.of(context).hintColor),
+                        // Row(
+                        //   crossAxisAlignment: CrossAxisAlignment.start,
+                        //   children: [
+                        //     Icon(Icons.check,
+                        //         size: 15, color: Theme.of(context).hintColor),
+                        //     SizedBox(width: 5),
+                        //     Container(
+                        //       height: 10,
+                        //       width: 10,
+                        //       decoration: const BoxDecoration(
+                        //         color: Colors.red,
+                        //         shape: BoxShape.circle,
+                        //       ),
+                        //     ),
+                        //     SizedBox(width: 5),
+                        //     Container(
+                        //       margin: EdgeInsets.only(top: 0),
+                        //       width: MediaQuery.of(context).size.width * 0.7,
+                        //       child: Text(
+                        //           'Todos los detalles importantes, marcados con puntos rojos, deben estar claramente visibles.',
+                        //           style: Theme.of(context)
+                        //               .textTheme
+                        //               .bodyText1!
+                        //               .copyWith(fontSize: 14)),
+                        //     ),
+                        //   ],
+                        // ),
                         Divider(color: Theme.of(context).hintColor),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -280,20 +280,20 @@ controller: ScrollController(),
   Widget imageByBank(String bankName) {
     bankName = bankName.toLowerCase();
     String imagePath = bankName.contains('pichincha')
-        ? 'assets/img/banks/pichincha.jpeg'
+        ? 'assets/img/banks/pichincha.png'
         : bankName.contains('beprodubanco')
-            ? 'assets/img/banks/beprodubanco.png'
+            ? 'assets/img/banks/beprodubanco.jpg'
             : bankName.contains('produbanco')
-                ? 'assets/img/banks/produbanco.jpeg'
+                ? 'assets/img/banks/produbanco.png'
                 : bankName.contains('una')
-                    ? 'assets/img/banks/deuna.jpeg'
+                    ? 'assets/img/banks/deuna.png'
                     : bankName.contains('internacional')
                         ? 'assets/img/banks/internacional.png'
                         : bankName.contains('guayaquil')
                             ? 'assets/img/banks/guayaquil.png'
                             : bankName.contains('pacifico')
                                 ? 'assets/img/banks/pacifico.png'
-                                : 'assets/img/banks/otrobanco.jpeg';
+                                : 'assets/img/banks/otrobanco.png';
 
     return GestureDetector(
       onTap: () => _showExpandedImage(context, imagePath),
